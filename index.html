@@ -228,27 +228,30 @@
 
     .firefly {
       position: fixed;
-      width: 3.2px;
-      height: 3.2px;
       border-radius: 50%;
       background: var(--ff-color, rgba(247, 169, 74, 1));
-      box-shadow: 0 0 18px var(--ff-color, rgba(247, 169, 74, 1));
+      box-shadow: 0 0 22px var(--ff-color, rgba(247, 169, 74, 1));
       pointer-events: none;
       opacity: 0;
       animation:
         ff-float linear infinite,
-        ff-fade ease-in-out infinite alternate;
-      filter: blur(0.5px);
+        ff-fade ease-in-out infinite;
+      filter: blur(0.4px);
     }
 
     @keyframes ff-float {
-      0% { transform: translate3d(0, 0, 0); }
+      0%   { transform: translate3d(0, 0, 0); }
       100% { transform: translate3d(var(--tx), var(--ty), 0); }
     }
 
+    /* 不規則閃爍：多段起伏 */
     @keyframes ff-fade {
-      0%   { opacity: 0.28; }
-      50%  { opacity: 0.9; }
+      0%   { opacity: 0.05; }
+      15%  { opacity: 0.95; }
+      30%  { opacity: 0.25; }
+      48%  { opacity: 0.85; }
+      65%  { opacity: 0.3; }
+      78%  { opacity: 0.9; }
       100% { opacity: 0.4; }
     }
 
@@ -302,7 +305,7 @@
       }
 
       .firefly {
-        opacity: 0.4;
+        opacity: 0.5;
       }
     }
   </style>
@@ -325,7 +328,7 @@
         <h1 class="hero-title">Genetic function, installed</h1>
 
         <div class="hero-lines">
-          <div>Natural expression</div>
+          <div>Natural expressio</div>
           <div>Silent unless correct</div>
           <div>Built to last</div>
         </div>
@@ -422,10 +425,10 @@
       pairs.forEach((p) => observer.observe(p));
     })();
 
-    // Firefly：3 色有階級 + 更亮 & 更多
+    // Firefly：全畫面均勻 + 右側加重約 10%
     (function () {
       const isMobile = window.innerWidth <= 768;
-      const count = isMobile ? 12 : 26;
+      const count = isMobile ? 14 : 27; // 跟上一版一樣
       const container = document.getElementById("fireflies");
       if (!container) return;
 
@@ -439,14 +442,38 @@
         const f = document.createElement("div");
         f.classList.add("firefly");
 
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
+        // 分布設計：
+        //  50%：全畫面均勻 (0–100vw, 5–95vh)
+        //  30%：右側加重 (55–100vw, 10–90vh)
+        //  20%：左側補平衡 (0–55vw, 10–90vh)
+        let x, y;
+        const zone = Math.random();
+        if (zone < 0.5) {
+          x = Math.random() * 100;         // 全域
+          y = 5 + Math.random() * 90;      // 避開最上/最下
+        } else if (zone < 0.8) {
+          x = 55 + Math.random() * 45;     // 右半偏重
+          y = 10 + Math.random() * 80;
+        } else {
+          x = Math.random() * 55;          // 左 0–55
+          y = 10 + Math.random() * 80;
+        }
 
-        const tx = Math.random() * 80 - 40;
-        const ty = Math.random() * 120 - 60;
+        // 飄移：方向亂，速度維持「變慢 25%」的設定
+        const angle = Math.random() * Math.PI * 2;
+        const radiusX = 60 + Math.random() * 80;   // 60–140px
+        const radiusY = 60 + Math.random() * 100;  // 60–160px
+        const tx = Math.cos(angle) * radiusX;
+        const ty = Math.sin(angle) * radiusY;
 
-        const floatTime = 18 + Math.random() * 14;
-        const fadeTime = 6 + Math.random() * 5;
+        const baseFloat = 10 + Math.random() * 14; // 10–24
+        const baseFade  = 4 + Math.random() * 6;   // 4–10
+        const floatTime = baseFloat * 1.33;        // 約慢 25%
+        const fadeTime  = baseFade  * 1.33;
+
+        const size = 2.4 + Math.random() * 2.2;    // 2.4–4.6px
+        f.style.width = size + "px";
+        f.style.height = size + "px";
 
         const r = Math.random();
         let color;
@@ -459,6 +486,9 @@
         f.style.setProperty("--tx", tx + "px");
         f.style.setProperty("--ty", ty + "px");
         f.style.animationDuration = floatTime + "s, " + fadeTime + "s";
+        f.style.animationDelay =
+          (Math.random() * -floatTime) + "s, " +
+          (Math.random() * -fadeTime) + "s";
         f.style.setProperty("--ff-color", color);
 
         container.appendChild(f);
@@ -487,14 +517,9 @@
         const fx = -xr;
         const fy = -yr;
 
-        // 背景輕微移動
         sky.style.transform = `translate3d(${fx * 10}px, ${fy * 10}px, 0)`;
-
-        // Halo：以中心為基準，再小幅跟著鼠標
         halo.style.transform =
           `translate(-50%, -50%) translate3d(${fx * 32}px, ${fy * 32}px, 0)`;
-
-        // Fireflies：中階 parallax
         fireflies.style.transform =
           `translate3d(${fx * 18}px, ${fy * 18}px, 0)`;
       }

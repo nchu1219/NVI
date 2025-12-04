@@ -13,7 +13,6 @@
       --goldfire: #F7A94A;        /* Sunset Goldfire */
       --sand: #D9C6A3;            /* Warm Sandstone */
       --jade: #8BC6A0;            /* Soft Jadewood */
-      --rose: #F7C8D0;            /* Rose Dawn (幾乎不用) */
 
       --text-main: var(--sand);
       --text-dim: rgba(217, 198, 163, 0.78);
@@ -38,7 +37,7 @@
       overflow-x: hidden;
     }
 
-    /* 背景：霧狀層（深 teal + 金光）＋ Chromatic Breathing */
+    /* 背景層：霧狀層 + 星點 */
     .sky {
       position: fixed;
       inset: 0;
@@ -48,11 +47,11 @@
         radial-gradient(circle at 50% 95%, rgba(0, 21, 28, 0.9), transparent 70%);
       pointer-events: none;
       z-index: -3;
-      animation:
-        skyHueBreath 22s ease-in-out infinite alternate;
+      animation: skyHueBreath 22s ease-in-out infinite alternate;
+      will-change: transform, filter;
+      transition: transform 0.25s ease-out;
     }
 
-    /* 背景：細小星點（Sand + Goldfire） */
     .stars {
       position: fixed;
       inset: 0;
@@ -67,15 +66,11 @@
     }
 
     @keyframes drift {
-      0% {
-        transform: translate3d(0, 0, 0);
-      }
-      100% {
-        transform: translate3d(-40px, -60px, 0);
-      }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-40px, -60px, 0); }
     }
 
-    /* 中央 Halo：Goldfire + Jade（高級深科技感）＋ Chromatic Breathing */
+    /* 中央 Halo：固定中心，再加滑鼠偏移 */
     .halo {
       position: fixed;
       width: 520px;
@@ -90,32 +85,21 @@
       opacity: 0.85;
       pointer-events: none;
       z-index: -1;
-      animation:
-        haloHueBreath 18s ease-in-out infinite alternate;
+      animation: haloHueBreath 18s ease-in-out infinite alternate;
+      will-change: transform, filter;
+      transition: transform 0.25s ease-out;
     }
 
     @keyframes skyHueBreath {
-      0% {
-        filter: hue-rotate(0deg) brightness(1.0);
-      }
-      50% {
-        filter: hue-rotate(6deg) brightness(1.04);
-      }
-      100% {
-        filter: hue-rotate(-4deg) brightness(0.97);
-      }
+      0%   { filter: hue-rotate(0deg)  brightness(1.0); }
+      50%  { filter: hue-rotate(6deg)  brightness(1.04); }
+      100% { filter: hue-rotate(-4deg) brightness(0.97); }
     }
 
     @keyframes haloHueBreath {
-      0% {
-        filter: blur(14px) hue-rotate(0deg) brightness(1.0);
-      }
-      50% {
-        filter: blur(16px) hue-rotate(5deg) brightness(1.06);
-      }
-      100% {
-        filter: blur(13px) hue-rotate(-3deg) brightness(0.96);
-      }
+      0%   { filter: blur(14px) hue-rotate(0deg)  brightness(1.0); }
+      50%  { filter: blur(16px) hue-rotate(5deg)  brightness(1.06); }
+      100% { filter: blur(13px) hue-rotate(-3deg) brightness(0.96); }
     }
 
     .page {
@@ -194,7 +178,6 @@
       margin-bottom: 30px;
     }
 
-    /* group: 一組（大字 + 小字） */
     .pair {
       margin-bottom: 12px;
     }
@@ -233,48 +216,40 @@
       filter: blur(0);
     }
 
-    /* Firefly Halo 容器 */
+    /* Firefly 容器 */
     #fireflies {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 0; /* 介於背景與文字之間，不會蓋住內容 */
+      z-index: 0;
+      will-change: transform;
+      transition: transform 0.25s ease-out;
     }
 
     .firefly {
       position: fixed;
-      width: 3px;
-      height: 3px;
+      width: 3.2px;
+      height: 3.2px;
       border-radius: 50%;
-      background: var(--ff-color, rgba(247, 169, 74, 0.9));
-      box-shadow: 0 0 14px var(--ff-color, rgba(247, 169, 74, 0.9));
+      background: var(--ff-color, rgba(247, 169, 74, 1));
+      box-shadow: 0 0 18px var(--ff-color, rgba(247, 169, 74, 1));
       pointer-events: none;
       opacity: 0;
       animation:
         ff-float linear infinite,
         ff-fade ease-in-out infinite alternate;
-      filter: blur(0.6px);
+      filter: blur(0.5px);
     }
 
     @keyframes ff-float {
-      0% {
-        transform: translate3d(0, 0, 0);
-      }
-      100% {
-        transform: translate3d(var(--tx), var(--ty), 0);
-      }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(var(--tx), var(--ty), 0); }
     }
 
     @keyframes ff-fade {
-      0% {
-        opacity: 0.22;
-      }
-      50% {
-        opacity: 0.75;
-      }
-      100% {
-        opacity: 0.3;
-      }
+      0%   { opacity: 0.28; }
+      50%  { opacity: 0.9; }
+      100% { opacity: 0.4; }
     }
 
     /* 手機優化 */
@@ -327,7 +302,7 @@
       }
 
       .firefly {
-        opacity: 0.35;
+        opacity: 0.4;
       }
     }
   </style>
@@ -347,7 +322,7 @@
       <div class="content">
         <div class="hero-tag">GENETIC INSTALLATION LAYER</div>
 
-        <h1 class="hero-title">Genetic function, installed.</h1>
+        <h1 class="hero-title">Genetic function, installed</h1>
 
         <div class="hero-lines">
           <div>Natural expression</div>
@@ -362,7 +337,6 @@
       <div class="content">
         <div class="section-title">THE LAYER</div>
 
-        <!-- Group 1 -->
         <div class="pair">
           <div class="item reveal">Beyond delivery</div>
           <div class="item-sub reveal">
@@ -370,7 +344,6 @@
           </div>
         </div>
 
-        <!-- Group 2 -->
         <div class="pair">
           <div class="item reveal">Beyond editing</div>
           <div class="item-sub reveal">
@@ -378,7 +351,6 @@
           </div>
         </div>
 
-        <!-- Group 3 -->
         <div class="pair">
           <div class="item reveal">Beyond biology itself</div>
           <div class="item-sub reveal">
@@ -393,7 +365,6 @@
       <div class="content">
         <div class="section-title">THE APPLICATIONS</div>
 
-        <!-- Group 4: Genetic Medicines -->
         <div class="pair">
           <div class="item reveal">Genetic Medicines</div>
           <div class="item-sub reveal">
@@ -401,7 +372,6 @@
           </div>
         </div>
 
-        <!-- Group 5: Engineered Cells -->
         <div class="pair">
           <div class="item reveal">Engineered Cells</div>
           <div class="item-sub reveal">
@@ -409,7 +379,6 @@
           </div>
         </div>
 
-        <!-- Group 6: Cross-Modality Programs -->
         <div class="pair">
           <div class="item reveal">Cross-Modality Programs</div>
           <div class="item-sub reveal">
@@ -421,21 +390,18 @@
   </div>
 
   <script>
-    // ===== Apple Style 群組式動畫：每組 pair 進場時，先大字再小字 =====
+    // 群組 reveal：先大字再小字
     (function () {
       const pairs = document.querySelectorAll(".pair");
-
       const isMobile = window.innerWidth <= 768;
-      const withinDelay = isMobile ? 140 : 200;   // 大字 → 小字
+      const withinDelay = isMobile ? 140 : 200;
+
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
             const pair = entry.target;
-
-            if (pair.dataset.activated === "1") {
-              return;
-            }
+            if (pair.dataset.activated === "1") return;
             pair.dataset.activated = "1";
 
             const lines = pair.querySelectorAll(".reveal");
@@ -449,24 +415,24 @@
         {
           root: null,
           threshold: 0.45,
-          rootMargin: "0px 0px -10% 0px"
+          rootMargin: "0px 0px -10% 0px",
         }
       );
 
       pairs.forEach((p) => observer.observe(p));
     })();
 
-    // ===== Firefly Halo Generator (Midnight Oracle / 金火主體) =====
+    // Firefly：3 色有階級 + 更亮 & 更多
     (function () {
       const isMobile = window.innerWidth <= 768;
-      const count = isMobile ? 8 : 16;
+      const count = isMobile ? 12 : 26;
       const container = document.getElementById("fireflies");
       if (!container) return;
 
       const colors = [
-        "#F7A94A", // Sunset Goldfire - 主
-        "#D9C6A3", // Warm Sandstone - 次
-        "#8BC6A0"  // Soft Jadewood - 少量生命綠
+        "#F7A94A", // Goldfire - 主
+        "#D9C6A3", // Sandstone - 次
+        "#8BC6A0"  // Jade - 少量
       ];
 
       for (let i = 0; i < count; i++) {
@@ -476,21 +442,17 @@
         const x = Math.random() * 100;
         const y = Math.random() * 100;
 
-        const tx = Math.random() * 80 - 40; // -40 ~ +40
-        const ty = Math.random() * 120 - 60; // -60 ~ +60
+        const tx = Math.random() * 80 - 40;
+        const ty = Math.random() * 120 - 60;
 
-        const floatTime = 18 + Math.random() * 14; // 18–32s
-        const fadeTime = 6 + Math.random() * 5;    // 6–11s
+        const floatTime = 18 + Math.random() * 14;
+        const fadeTime = 6 + Math.random() * 5;
 
         const r = Math.random();
         let color;
-        if (r < 0.65) {
-          color = colors[0]; // 大多數 Goldfire
-        } else if (r < 0.9) {
-          color = colors[1]; // 一部分 Sand
-        } else {
-          color = colors[2]; // 少量 Jade
-        }
+        if (r < 0.55)      color = colors[0];
+        else if (r < 0.9)  color = colors[1];
+        else               color = colors[2];
 
         f.style.left = x + "vw";
         f.style.top = y + "vh";
@@ -501,6 +463,43 @@
 
         container.appendChild(f);
       }
+    })();
+
+    // Crosshair depth tracking：背景 + halo + fireflies
+    (function () {
+      const sky = document.querySelector(".sky");
+      const halo = document.querySelector(".halo");
+      const fireflies = document.getElementById("fireflies");
+
+      if (!sky || !halo || !fireflies) return;
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) return;
+
+      function handleMove(e) {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const x = e.clientX ?? w / 2;
+        const y = e.clientY ?? h / 2;
+
+        const xr = (x / w) - 0.5; // -0.5 ~ 0.5
+        const yr = (y / h) - 0.5;
+
+        const fx = -xr;
+        const fy = -yr;
+
+        // 背景輕微移動
+        sky.style.transform = `translate3d(${fx * 10}px, ${fy * 10}px, 0)`;
+
+        // Halo：以中心為基準，再小幅跟著鼠標
+        halo.style.transform =
+          `translate(-50%, -50%) translate3d(${fx * 32}px, ${fy * 32}px, 0)`;
+
+        // Fireflies：中階 parallax
+        fireflies.style.transform =
+          `translate3d(${fx * 18}px, ${fy * 18}px, 0)`;
+      }
+
+      window.addEventListener("mousemove", handleMove);
     })();
   </script>
 </body>

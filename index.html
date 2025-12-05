@@ -231,17 +231,24 @@
       line-height: 1.3;
     }
 
-    /* AI 按鈕 - 金色呼吸 */
-    @keyframes bioPulse {
+    /* AI 按鈕 - 金色呼吸 (增強版：深度與亮度) */
+    @keyframes bioPulseDeep {
       0%, 100% { 
-        box-shadow: 0 0 5px rgba(247, 169, 74, 0.1), inset 0 0 2px rgba(247, 169, 74, 0.05); 
-        border-color: rgba(247, 169, 74, 0.4); 
+        /* 沉睡狀態：極低亮度，保留神祕感 */
+        box-shadow: 0 0 2px rgba(247, 169, 74, 0.05), inset 0 0 1px rgba(247, 169, 74, 0.05); 
+        border-color: rgba(247, 169, 74, 0.3); 
+        background-color: rgba(247, 169, 74, 0.01);
+        text-shadow: 0 0 0 rgba(247, 169, 74, 0);
         transform: scale(1);
       }
       50% { 
-        box-shadow: 0 0 15px rgba(247, 169, 74, 0.25), inset 0 0 8px rgba(247, 169, 74, 0.1); 
-        border-color: rgba(247, 169, 74, 0.9); 
-        transform: scale(1.01);
+        /* 覺醒狀態：高亮、擴散、充能 */
+        /* 光暈範圍擴大至 35px */
+        box-shadow: 0 0 35px rgba(247, 169, 74, 0.5), inset 0 0 15px rgba(247, 169, 74, 0.2); 
+        border-color: rgba(247, 169, 74, 1); 
+        background-color: rgba(247, 169, 74, 0.12); /* 內部微亮 */
+        text-shadow: 0 0 12px rgba(247, 169, 74, 0.8); /* 文字發光 */
+        transform: scale(1.02);
       }
     }
 
@@ -258,22 +265,23 @@
       padding: 16px 32px;
       cursor: pointer;
       border-radius: 4px;
-      transition: all 0.4s ease;
+      transition: all 0.6s ease; /* 讓互動反應也更優雅 */
       display: flex;
       align-items: center;
       gap: 12px;
       
-      /* 應用呼吸動畫 */
-      animation: bioPulse 4s ease-in-out infinite;
+      /* 10s 極慢呼吸循環 */
+      animation: bioPulseDeep 10s ease-in-out infinite;
     }
 
-    /* Button Hover: 金色微光 + 停止呼吸 */
+    /* Button Hover: 金色微光 + 停止呼吸 (維持您喜歡的設定) */
     .architect-btn:hover {
       background: rgba(247, 169, 74, 0.15); 
       color: var(--goldfire);
       border-color: var(--goldfire);
       box-shadow: 0 0 25px rgba(247, 169, 74, 0.4), inset 0 0 5px rgba(247, 169, 74, 0.1);
       transform: translateY(-2px);
+      text-shadow: 0 0 5px rgba(247, 169, 74, 0.6);
       animation: none;
     }
     

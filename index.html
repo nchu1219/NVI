@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Manrope:wght@200;400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700;800&family=Manrope:wght@200;400;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -467,22 +467,24 @@
     .reveal.active { opacity: 1; transform: translateY(0); }
     
     /* ---------------------------------------------------- */
-    /* NEW: COMMAND LINE FOOTER */
+    /* UPDATED: COMMAND LINE FOOTER */
     /* ---------------------------------------------------- */
     .footer-section {
-      /* DRASTICALLY REDUCED MARGIN AND PADDING FOR TIGHTER FOOTER */
-      margin-top: 20px; 
-      padding-bottom: 40px; 
+      /* Increased margin-top for "lower" position */
+      margin-top: 60px; 
+      padding-bottom: 60px; 
       display: flex;
       justify-content: center;
     }
     
     .footer-command {
       font-family: var(--font-mono);
-      font-size: 0.9rem;
+      /* Increased font size slightly */
+      font-size: 1.1rem; 
       color: var(--jade);
       cursor: pointer;
-      opacity: 0.7;
+      /* Increased opacity slightly for better visibility */
+      opacity: 0.8; 
       transition: all 0.3s ease;
       padding: 10px 20px;
       border: 1px solid transparent;
@@ -596,7 +598,6 @@
 
   <div class="page">
     
-    <!-- Hero Section -->
     <section class="hero">
       <div style="margin-bottom: auto;"></div>
       
@@ -604,7 +605,7 @@
         <div class="hero-tag reveal">GENETIC INSTALLATION LAYER</div>
         
         <h1 class="hero-title reveal">
-          Genetic function, <br>
+          Genetic Function, <br>
           <strong class="hacker-text" data-value="INSTALLED"></strong>
         </h1>
 
@@ -624,7 +625,6 @@
       <div class="scroll-indicator">SCROLL TO EXPLORE</div>
     </section>
 
-    <!-- The Layer Section -->
     <section class="section">
       <h2 class="reveal">The Layer</h2>
       
@@ -638,48 +638,45 @@
         <div class="card-wrapper reveal" style="transition-delay: 0.3s;">
           <div class="feature-card" onclick="toggleCard(this)">
             <span class="item-title">Beyond editing</span>
-            <p class="item-desc">Editing opens access. Installation determines how function is established.</p>
+            <p class="item-desc">Editing opens access. Installation defines function.</p>
           </div>
         </div>
         <div class="card-wrapper reveal" style="transition-delay: 0.6s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <span class="item-title">Beyond biology itself</span>
+            <span class="item-title">Beyond biology</span>
             <p class="item-desc">A layer that changes what genes are allowed to do.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Applications Section -->
-    <section class="section" style="padding-bottom: 0;"> <!-- ADDED INLINE STYLE TO REMOVE PADDING -->
-      <h2 class="reveal">Applications</h2>
+    <section class="section" style="padding-bottom: 0;"> <h2 class="reveal">Applications</h2>
 
       <div class="grid-container">
         <div class="card-wrapper reveal" style="transition-delay: 0s;">
           <div class="feature-card" onclick="toggleCard(this)">
             <span class="item-title">Genetic Medicines</span>
-            <p class="item-desc">Where durable, well-behaved gene function is essential.</p>
+            <p class="item-desc">Engineered for durable, well-behaved gene function.</p>
           </div>
         </div>
         <div class="card-wrapper reveal" style="transition-delay: 0.3s;">
           <div class="feature-card" onclick="toggleCard(this)">
             <span class="item-title">Engineered Cells</span>
-            <p class="item-desc">Cells whose behavior is defined at installation.</p>
+            <p class="item-desc">Behavior defined at the point of installation.</p>
           </div>
         </div>
         <div class="card-wrapper reveal" style="transition-delay: 0.6s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <span class="item-title">Cross-Modality Programs</span>
+            <span class="item-title">Modality-Agnostic</span>
             <p class="item-desc">Built to plug into any modern non-viral stack.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- UPDATED: COMMAND LINE FOOTER -->
     <footer class="footer-section">
       <div class="footer-command" onclick="toggleContactTerminal()">
-        > ESTABLISH_ENCRYPTED_UPLINK<span class="cursor-blink">_</span>
+        > REQUEST_INSTALLATION<span class="cursor-blink">_</span>
       </div>
     </footer>
     
@@ -688,7 +685,6 @@
     </div>
   </div>
 
-  <!-- 1. AI Protocol Terminal (Existing) -->
   <div class="terminal-overlay" id="terminalOverlay">
     <div class="terminal-window">
       <div class="terminal-header">
@@ -713,35 +709,33 @@
     </div>
   </div>
 
-  <!-- 2. NEW: Contact Uplink Terminal -->
   <div class="terminal-overlay" id="contactOverlay">
     <div class="terminal-window">
       <div class="terminal-header">
-        <span class="terminal-title" style="color: var(--goldfire);">SECURE COMM CHANNEL // ENCRYPTED</span>
+        <span class="terminal-title" style="color: var(--goldfire);">INSTALLATION_UPLINK // SECURE</span>
         <span class="terminal-close" onclick="toggleContactTerminal()">×</span>
       </div>
       <div class="terminal-body">
         
         <div class="contact-field-group">
           <div>
-            <label class="contact-label">SOURCE_EMAIL</label>
+            <label class="contact-label">OPERATOR_ID (EMAIL)</label>
             <input type="email" class="ai-input" id="uplinkEmail" placeholder="auth@identity.com" autocomplete="off" style="font-size: 0.9rem;">
           </div>
           <div>
-            <label class="contact-label">MESSAGE_CONTENT</label>
-            <input type="text" class="ai-input" id="uplinkMsg" placeholder="Input parameters..." autocomplete="off" style="font-size: 0.9rem;">
+            <label class="contact-label">INSTALLATION_PARAMETERS (MESSAGE)</label>
+            <input type="text" class="ai-input" id="uplinkMsg" placeholder="Input target specifications..." autocomplete="off" style="font-size: 0.9rem;">
           </div>
         </div>
 
         <div style="position: relative; height: 40px;">
-           <!-- Cleaned up inline style to use CSS class for proper hover effect -->
            <button class="generate-btn" id="handshakeBtn" onclick="submitContactHandshake()">
-             REQUEST HANDSHAKE
+             TRANSMIT INSTALLATION REQUEST
            </button>
         </div>
 
         <div class="terminal-disclaimer" style="border-color: rgba(247, 169, 74, 0.2); color: rgba(247, 169, 74, 0.5);">
-           NOTICE: Uplink is monitored. Unauthorized access attempts will be logged.
+           NOTICE: Uplink is monitored. Unauthorized installation attempts will be logged.
         </div>
       </div>
     </div>
@@ -853,16 +847,14 @@
       statusLine.style.display = 'block';
       statusLine.innerText = 'ESTABLISHING SECURE UPLINK...';
 
-      // ⚠️ IMPORTANT: Using Secure Cloudflare Worker URL
       const workerUrl = "https://unoexon-core.ming-cgt.workers.dev"; 
 
-      // Updated prompt to ask for real science and links
       const prompt = `
         Role: You are the central AI core of "UnoExon", a highly advanced biotech company specializing in genetic installation.
         Task: Analyze the user's request: "${userInput}" and generate a "Genetic Installation Protocol".
         
         [IMPORTANT] INSTRUCTIONS:
-        1.  **Real Science**: Identify REAL genes or biological mechanisms that could theoretically achieve the requested trait. Do not invent fake gene names.
+        1.  **Real Science**: Identify REAL genes or biological mechanisms.
         2.  **Language**: 
             - If user input is Chinese -> Output in Traditional Chinese (繁體中文).
             - If user input is English -> Output in English.
@@ -870,9 +862,9 @@
             - Tone: Professional, Clinical, High-Tech.
             - Structure:
               > TARGET ANALYSIS: [Brief analysis of the biological goal]
-              > GENETIC CANDIDATES: [List 1-2 real genes/proteins (e.g., GFP, CAS9, HSP70)]
+              > GENETIC CANDIDATES: [List 1-2 real genes/proteins]
               > INSTALLATION VECTOR: [Briefly describe the delivery method]
-              > DATABASE LINK: [Provide a direct URL to the NCBI Gene database for the primary gene mentioned. Format: https://www.ncbi.nlm.nih.gov/gene/?term=GENE_NAME]
+              > DATABASE LINK: [Provide a direct URL to the NCBI Gene database. Format: https://www.ncbi.nlm.nih.gov/gene/?term=GENE_NAME]
         - Concise (under 120 words).
       `;
 
@@ -892,13 +884,6 @@
 
         let generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || "NO DATA RECEIVED.";
         
-        // Simple linkifier to make URLs clickable in the output
-        // Note: The typeWriter function will type raw HTML text, which might look ugly while typing.
-        // To fix this, we will process the text first and then type it, or just use innerHTML directly for the final render.
-        // For the "typing effect" with HTML, it's complex. 
-        // Strategy: We will strip HTML for typing, then replace with HTML at the end. Or just type plain text.
-        // Given the requirement for links, let's try to detect URLs and wrap them in <a> tags AFTER typing is done.
-
         statusLine.innerText = 'DATA STREAM RECEIVED. RENDERING...';
         let i = 0;
         terminalOutput.classList.add('typing-cursor');
@@ -912,7 +897,6 @@
           } else {
             statusLine.innerText = 'PROTOCOL ESTABLISHED.';
             terminalOutput.classList.remove('typing-cursor');
-            // Auto-linkify after typing is done
             const urlRegex = /(https?:\/\/[^\s]+)/g;
             terminalOutput.innerHTML = terminalOutput.innerHTML.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
           }
@@ -928,11 +912,10 @@
           Reason: ${error.message}<br><br>
           Note: Ensure the Cloudflare Worker is correctly deployed and the URL is valid.
         `;
-	  }
-        }
-
+      }
+    }
     
-    // 6. NEW: Contact Uplink Logic
+    // 6. Contact Uplink Logic (INSTALLATION RITUAL)
     const contactOverlay = document.getElementById('contactOverlay');
     
     function toggleContactTerminal() {
@@ -942,7 +925,7 @@
        }
     }
     
-    // 將原本的 submitContactHandshake 替換為指向 Cloudflare 的版本
+    // Updated submit function with technical installation terms
     async function submitContactHandshake() {
       const email = document.getElementById('uplinkEmail').value;
       const msg = document.getElementById('uplinkMsg').value;
@@ -953,18 +936,15 @@
         return;
       }
       
-      // 1. UI 鎖定與初始狀態
+      // 1. UI Lock & Init
       btn.disabled = true;
-      btn.innerText = 'INITIALIZING...';
+      btn.innerText = 'INITIALIZING LINK...'; 
       
-      // 保留帥氣的延遲儀式感
       await new Promise(r => setTimeout(r, 1000));
       
-      btn.innerText = 'UPLOADING...';
+      btn.innerText = 'ENCODING PAYLOAD...';
 
       try {
-        // 2. 發送請求給 Cloudflare Worker
-        // [UPDATED] 已更新為您的 Worker URL
         const WORKER_URL = "https://my-telegram-bot.ming-cgt.workers.dev";
 
         const response = await fetch(WORKER_URL, { 
@@ -972,7 +952,7 @@
             body: JSON.stringify({
                 email: email,
                 message: msg,
-                source: "UnoExon Encrypted Channel" 
+                source: "UnoExon Installation Request" // Source Tag
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -980,8 +960,8 @@
         });
 
         if (response.ok) {
-            // 3. 成功狀態
-            btn.innerText = 'TRANSMISSION COMPLETE';
+            // 3. Success State
+            btn.innerText = 'REQUEST QUEUED'; 
             btn.style.color = '#fff';
             btn.style.borderColor = '#fff';
             
@@ -991,7 +971,7 @@
             setTimeout(() => {
                // Reset
                btn.disabled = false;
-               btn.innerText = 'REQUEST HANDSHAKE';
+               btn.innerText = 'TRANSMIT INSTALLATION REQUEST'; 
                btn.style.color = 'var(--jade)'; 
                btn.style.borderColor = 'rgba(139, 198, 160, 0.5)'; 
                toggleContactTerminal(); // Close on success
@@ -1000,18 +980,17 @@
             throw new Error('Worker response not ok');
         }
       } catch (error) {
-        // 4. 錯誤狀態 (移除 Demo Mode，恢復真實錯誤回報)
+        // 4. Error State
         console.error("Submission error:", error);
-        btn.innerText = 'UPLINK FAILED';
-        btn.style.color = '#ff6b6b'; // 紅色警告
+        btn.innerText = 'TRANSMISSION FAILED';
+        btn.style.color = '#ff6b6b'; 
         btn.style.borderColor = '#ff6b6b';
         
         setTimeout(() => {
            btn.disabled = false;
-           btn.innerText = 'RETRY HANDSHAKE'; // 提示重試
+           btn.innerText = 'RETRY TRANSMISSION'; 
            btn.style.color = 'var(--jade)'; 
            btn.style.borderColor = 'rgba(139, 198, 160, 0.5)'; 
-           // 失敗時不關閉視窗，方便使用者檢查或重試
         }, 3000);
       }
     }

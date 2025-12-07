@@ -7,7 +7,6 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- display=swap is already here, ensuring text is visible during loading -->
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700;800&family=Manrope:wght@200;400;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -124,10 +123,26 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(247, 169, 74, 0.15), transparent 65%);
-      filter: blur(40px);
+      /* UPDATED: Opacity set to 0.33 per request */
+      background: radial-gradient(circle, rgba(247, 169, 74, 0.33), transparent 65%);
+      filter: blur(50px);
       pointer-events: none;
       z-index: -1;
+      mix-blend-mode: screen; 
+      /* UPDATED: Speed set to 6s per request */
+      animation: haloBreath 6s ease-in-out infinite alternate;
+    }
+
+    /* UPDATED: Scaling range 0.8 to 1.33 per request */
+    @keyframes haloBreath {
+      0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.4;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.33);
+        opacity: 0.9;
+      }
     }
 
     @keyframes drift {

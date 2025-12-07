@@ -547,27 +547,57 @@
     @media (hover: hover) { .terminal-close:hover { opacity: 1; } }
     .terminal-body { padding: 32px; min-height: 500px; display: flex; flex-direction: column; gap: 10px; }
     
-    /* UPDATED: Refined Prompt & Input Styling */
+    /* UPDATED: Input styling to include > prefix */
     .terminal-prompt { margin-bottom: 10px; color: var(--sand); font-size: 0.9rem; } 
-    .ai-input-group { position: relative; margin-bottom: 10px; }
     
-    /* UPDATED: Smaller font size for input */
+    .ai-input-group { 
+        position: relative; 
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--text-dim); 
+        transition: border-color 0.3s ease;
+    }
+    
+    .prompt-char {
+        color: var(--text-dim);
+        font-family: var(--font-mono);
+        margin-right: 8px;
+        font-weight: 700;
+        transition: color 0.3s;
+    }
+
+    .prompt-char.active-mode {
+        color: var(--jade);
+        animation: blinkJade 1s step-end infinite;
+    }
+
+    @keyframes blinkJade {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.2; }
+    }
+    
     .ai-input { 
-      width: 100%; 
+      flex: 1; /* Take remaining space */
       background: transparent; 
       border: none; 
-      border-bottom: 1px solid var(--text-dim); 
+      /* border-bottom moved to group */
       color: #fff; 
       font-family: var(--font-mono); 
       font-size: 0.95rem; 
       padding: 10px 0; 
+      padding-right: 90px; 
       outline: none; 
-      transition: border-color 0.3s; 
     }
-    .ai-input:focus { border-color: var(--goldfire); }
+    
+    /* Input Group Active State */
+    .ai-input-group.active-mode {
+        border-color: var(--jade);
+    }
+
     .ai-input::placeholder { color: rgba(255, 255, 255, 0.2); }
     
-    .generate-btn { position: absolute; right: 0; bottom: 12px; background: none; border: 1px solid var(--goldfire); color: var(--goldfire); font-family: var(--font-mono); padding: 4px 12px; font-size: 0.75rem; cursor: pointer; opacity: 0.8; }
+    .generate-btn { position: absolute; right: 0; bottom: 8px; background: none; border: 1px solid var(--goldfire); color: var(--goldfire); font-family: var(--font-mono); padding: 4px 12px; font-size: 0.75rem; cursor: pointer; opacity: 0.8; }
     @media (hover: hover) {
       .generate-btn:hover { background: var(--goldfire); color: #000; }
     }
@@ -806,6 +836,7 @@
           <p style="font-size: 0.75rem; opacity: 0.6; margin-top: 4px;">Example: "Targeted tumor lysis" or "神經元再生矩陣"</p>
         </div>
         <div class="ai-input-group" id="terminalInputGroup">
+          <span id="inputPromptChar" class="prompt-char">></span>
           <input type="text" class="ai-input" id="geneInput" placeholder="Input target function..." autocomplete="off">
           <button class="generate-btn" id="actionBtn" onclick="handleInput()">EXECUTE</button>
         </div>
@@ -955,12 +986,16 @@
     function streamText(text, element, callback) {
         let i = 0;
         element.classList.add('typing-cursor');
+        // Get the scrolling container explicitly
+        const scrollContainer = document.getElementById('terminalOutput');
+        
         function type() {
             if (i < text.length) {
                 element.innerHTML += text.charAt(i);
                 i++;
-                element.scrollTop = element.scrollHeight;
-                setTimeout(type, 8); // Slightly faster typing
+                // Scroll the container to the bottom
+                if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                setTimeout(type, 8); 
             } else {
                 element.classList.remove('typing-cursor');
                 if(callback) callback();
@@ -976,22 +1011,23 @@
         element.innerHTML = element.innerHTML.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
     }
 
-    // New System Error Handler for "High-End" Look
+    // New System Error Handler for "High-End" Look (UPDATED)
     function handleSystemError(error, outputElement) {
-        let sysMsg = "SYSTEM_FAILURE";
-        let desc = "CORE_DUMP_INITIATED";
+        let sysMsg = "CORE_ANOMALY";
+        let desc = "SYSTEM_FAILURE.";
         
         const rawMsg = (error.message || "").toLowerCase();
         
         if(rawMsg.includes("quota") || rawMsg.includes("429")) {
             sysMsg = "NEURAL_SATURATION";
-            desc = "CAPACITY_EXCEEDED. STANDBY."; // Matches user expectation
+            desc = "CAPACITY_EXCEEDED. STANDBY."; // Minimalist
         } else if (rawMsg.includes("network") || rawMsg.includes("fetch")) {
             sysMsg = "UPLINK_SEVERED";
-            desc = "CONNECTION_LOST.";
+            desc = "CONNECTION_LOST."; // Minimalist
         }
 
         outputElement.innerHTML += `<br><br><span style="color: var(--danger); font-weight:700;">[${sysMsg}]</span><br><span style="opacity:0.6; font-size:0.8em;">// ${desc}</span>`;
+        outputElement.scrollTop = outputElement.scrollHeight; // Ensure error scrolls to view
         if (statusLine) statusLine.innerText = 'ERR_CONNECTION_RESET';
     }
 
@@ -1053,8 +1089,16 @@
             // Switch to Session Mode
             sessionActive = true;
             geneInput.value = '';
-            geneInput.placeholder = "Query the protocol (e.g. 'Side effects?', 'Delivery time?')...";
-            actionBtn.innerText = 'SEND QUERY';
+            
+            // UPDATED: Session Mode Visuals
+            const group = document.getElementById('terminalInputGroup');
+            const promptChar = document.getElementById('inputPromptChar');
+            
+            group.classList.add('active-mode');
+            promptChar.classList.add('active-mode');
+            
+            geneInput.placeholder = 'INPUT_QUERY (e.g. "side effects", "要多久")'; 
+            actionBtn.innerText = 'TRANSMIT';
             
             renderActionButtons();
         });
@@ -1071,6 +1115,8 @@
 
         // Display User Msg
         terminalOutput.innerHTML += `<div class="msg-user">> ${userQ}</div>`;
+        terminalOutput.scrollTop = terminalOutput.scrollHeight; // Force Scroll on user input
+        
         geneInput.value = '';
         statusLine.innerText = 'PROCESSING QUERY...';
 

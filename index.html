@@ -7,6 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- display=swap is already here, ensuring text is visible during loading -->
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700;800&family=Manrope:wght@200;400;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -101,7 +102,6 @@
       pointer-events: none;
       z-index: -3;
       animation: skyHueBreath 20s ease-in-out infinite alternate;
-      /* Removed will-change and transition related to mouse parallax */
     }
 
     .stars {
@@ -128,7 +128,6 @@
       filter: blur(40px);
       pointer-events: none;
       z-index: -1;
-      /* Removed transition related to mouse parallax */
     }
 
     @keyframes drift {
@@ -290,13 +289,16 @@
       animation: bioPulseDeep 10s ease-in-out infinite;
     }
 
-    .architect-btn:hover {
-      background: rgba(247, 169, 74, 0.15); 
-      color: var(--goldfire);
-      border-color: var(--goldfire);
-      box-shadow: 0 0 25px rgba(247, 169, 74, 0.4), inset 0 0 5px rgba(247, 169, 74, 0.1);
-      transform: translateY(-2px);
-      animation: none;
+    /* OPTIMIZED HOVER: Only applied on devices with a mouse */
+    @media (hover: hover) {
+      .architect-btn:hover {
+        background: rgba(247, 169, 74, 0.15); 
+        color: var(--goldfire);
+        border-color: var(--goldfire);
+        box-shadow: 0 0 25px rgba(247, 169, 74, 0.4), inset 0 0 5px rgba(247, 169, 74, 0.1);
+        transform: translateY(-2px);
+        animation: none;
+      }
     }
     
     @media (min-width: 1024px) {
@@ -312,11 +314,13 @@
         border: 1px solid rgba(247, 169, 74, 0.5);
       }
       
-      .architect-btn:hover {
-        background: rgba(247, 169, 74, 0.15);
-        color: var(--goldfire);
-        border-color: var(--goldfire);
-        box-shadow: 0 0 30px rgba(247, 169, 74, 0.35);
+      @media (hover: hover) {
+        .architect-btn:hover {
+          background: rgba(247, 169, 74, 0.15);
+          color: var(--goldfire);
+          border-color: var(--goldfire);
+          box-shadow: 0 0 30px rgba(247, 169, 74, 0.35);
+        }
       }
     }
 
@@ -382,11 +386,23 @@
       }
     }
     
-    .feature-card:hover {
-      border-color: var(--jade);
-      background: linear-gradient(180deg, rgba(0, 63, 79, 0.6) 0%, rgba(139, 198, 160, 0.15) 100%);
-      transform: translateY(-8px);
-      box-shadow: 0 15px 40px rgba(139, 198, 160, 0.25), 0 0 20px rgba(139, 198, 160, 0.15);
+    /* OPTIMIZED HOVER */
+    @media (hover: hover) {
+      .feature-card:hover {
+        border-color: var(--jade);
+        background: linear-gradient(180deg, rgba(0, 63, 79, 0.6) 0%, rgba(139, 198, 160, 0.15) 100%);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(139, 198, 160, 0.25), 0 0 20px rgba(139, 198, 160, 0.15);
+      }
+
+      .feature-card:hover::before { height: 100%; }
+
+      .feature-card:hover .item-title {
+        color: var(--jade);
+        text-shadow: 0 0 10px rgba(139, 198, 160, 0.5);
+      }
+
+      .feature-card:hover .item-desc { color: #ffffff; }
     }
 
     .feature-card::before {
@@ -397,8 +413,6 @@
       transition: height 0.4s ease;
     }
     
-    .feature-card:hover::before { height: 100%; }
-
     .item-title {
       font-size: 1.6rem;
       font-weight: 300;
@@ -450,13 +464,6 @@
       color: var(--jade);
     }
 
-    .feature-card:hover .item-title {
-      color: var(--jade);
-      text-shadow: 0 0 10px rgba(139, 198, 160, 0.5);
-    }
-
-    .feature-card:hover .item-desc { color: #ffffff; }
-
     .reveal {
       opacity: 0;
       transform: translateY(40px);
@@ -490,11 +497,13 @@
       letter-spacing: 0.05em;
     }
     
-    .footer-command:hover {
-      opacity: 1;
-      text-shadow: 0 0 10px rgba(139, 198, 160, 0.6);
-      background: rgba(139, 198, 160, 0.05);
-      border-color: rgba(139, 198, 160, 0.2);
+    @media (hover: hover) {
+      .footer-command:hover {
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(139, 198, 160, 0.6);
+        background: rgba(139, 198, 160, 0.05);
+        border-color: rgba(139, 198, 160, 0.2);
+      }
     }
     
     .cursor-blink {
@@ -522,7 +531,7 @@
     .terminal-header { background: rgba(139, 198, 160, 0.1); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(139, 198, 160, 0.2); }
     .terminal-title { font-size: 0.8rem; color: var(--jade); letter-spacing: 0.1em; }
     .terminal-close { cursor: pointer; color: var(--jade); font-size: 1.2rem; opacity: 0.7; transition: opacity 0.2s; }
-    .terminal-close:hover { opacity: 1; }
+    @media (hover: hover) { .terminal-close:hover { opacity: 1; } }
     .terminal-body { padding: 32px; min-height: 400px; display: flex; flex-direction: column; }
     .terminal-prompt { margin-bottom: 24px; color: var(--sand); }
     .ai-input-group { position: relative; margin-bottom: 32px; }
@@ -532,7 +541,9 @@
     .ai-input::placeholder { color: rgba(255, 255, 255, 0.2); }
     
     .generate-btn { position: absolute; right: 0; bottom: 12px; background: none; border: 1px solid var(--goldfire); color: var(--goldfire); font-family: var(--font-mono); padding: 4px 12px; font-size: 0.75rem; cursor: pointer; opacity: 0.8; }
-    .generate-btn:hover { background: var(--goldfire); color: #000; }
+    @media (hover: hover) {
+      .generate-btn:hover { background: var(--goldfire); color: #000; }
+    }
     
     .terminal-output { flex-grow: 1; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 24px; font-size: 0.9rem; line-height: 1.6; color: var(--text-dim); overflow-y: auto; max-height: 300px; white-space: pre-line; }
     .terminal-output a { color: var(--jade); text-decoration: none; border-bottom: 1px solid var(--jade); transition: all 0.3s; }
@@ -556,17 +567,30 @@
       text-shadow: 0 0 5px rgba(139, 198, 160, 0.3);
     }
 
-    #handshakeBtn:hover {
-      background: rgba(139, 198, 160, 0.08) !important; /* Very subtle background fill */
-      border-color: #fff !important;
-      color: #fff !important;
-      box-shadow: 0 0 30px rgba(139, 198, 160, 0.25); /* Diffuse elegant glow */
-      text-shadow: 0 0 10px rgba(139, 198, 160, 0.8);
-      letter-spacing: 0.2em; /* Expands slightly on hover for premium feel */
+    @media (hover: hover) {
+      #handshakeBtn:hover {
+        background: rgba(139, 198, 160, 0.08) !important; /* Very subtle background fill */
+        border-color: #fff !important;
+        color: #fff !important;
+        box-shadow: 0 0 30px rgba(139, 198, 160, 0.25); /* Diffuse elegant glow */
+        text-shadow: 0 0 10px rgba(139, 198, 160, 0.8);
+        letter-spacing: 0.2em; /* Expands slightly on hover for premium feel */
+      }
     }
 
     #fireflies { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .firefly { position: fixed; border-radius: 50%; background: var(--ff-color); box-shadow: 0 0 15px var(--ff-color); opacity: 0; animation: ff-float linear infinite, ff-fade ease-in-out infinite; }
+    
+    /* OPTIMIZED FIREFLY: Added will-change hint for GPU */
+    .firefly { 
+      position: fixed; 
+      border-radius: 50%; 
+      background: var(--ff-color); 
+      box-shadow: 0 0 15px var(--ff-color); 
+      opacity: 0; 
+      will-change: transform, opacity; /* GPU Hint */
+      animation: ff-float linear infinite, ff-fade ease-in-out infinite; 
+    }
+    
     @keyframes ff-float { to { transform: translate3d(var(--tx), var(--ty), 0); } }
     @keyframes ff-fade { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
 

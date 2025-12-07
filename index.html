@@ -101,8 +101,7 @@
       pointer-events: none;
       z-index: -3;
       animation: skyHueBreath 20s ease-in-out infinite alternate;
-      will-change: transform, filter;
-      transition: transform 0.2s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      /* Removed will-change and transition related to mouse parallax */
     }
 
     .stars {
@@ -129,7 +128,7 @@
       filter: blur(40px);
       pointer-events: none;
       z-index: -1;
-      transition: transform 0.15s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      /* Removed transition related to mouse parallax */
     }
 
     @keyframes drift {
@@ -681,7 +680,7 @@
     </footer>
     
     <div class="footer-legal">
-       DISCLAIMER: UnoExon is a conceptual demonstration powered by AI. Generated protocols are for simulation only. Not for medical use.
+        DISCLAIMER: UnoExon is a conceptual demonstration powered by AI. Generated protocols are for simulation only. Not for medical use.
     </div>
   </div>
 
@@ -768,15 +767,7 @@
       fireflyContainer.appendChild(f);
     }
 
-    // 2. Parallax
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5);
-        const y = (e.clientY / window.innerHeight - 0.5);
-        document.querySelector('.sky').style.transform = `translate(${x * 20}px, ${y * 20}px)`;
-        document.querySelector('.halo').style.transform = `translate(-50%, -50%) translate(${x * -40}px, ${y * -40}px)`;
-      });
-    }
+    // 2. Parallax (REMOVED per user request for optimization)
 
     // 3. Hacker Text
     const dnaLetters = "ATCG";

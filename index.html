@@ -17,7 +17,7 @@
       --goldfire: #F7A94A;
       --sand: #D9C6A3;
       --jade: #8BC6A0;
-      /* NEW: High-contrast Terminal Green for decoding effects */
+      /* High-contrast Terminal Green for decoding effects */
       --terminal-green: #33ff33; 
       --danger: #ff6b6b;
 
@@ -100,18 +100,19 @@
         padding: 32px; min-height: 240px; 
         border: 1px solid var(--glass-border); 
         background: rgba(2, 8, 12, 0.4); 
-        border-radius: 4px; transition: all 0.8s; 
+        border-radius: 4px; transition: all 0.6s ease;
         position: relative; overflow: hidden; 
         display: flex; flex-direction: column; justify-content: space-between; 
         cursor: pointer; 
+        -webkit-tap-highlight-color: transparent; /* Remove highlight on mobile */
     }
     
-    /* VISUAL CONTRAST: GENE STREAM */
+    /* === SECTION 2: GENE DECODE STREAM (ENHANCED) === */
     .gene-decode-bg {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        font-family: var(--font-mono); font-size: 10px; line-height: 10px;
+        /* UPDATED: Increased Font Size for Density */
+        font-family: var(--font-mono); font-size: 15px; line-height: 15px;
         color: var(--terminal-green); 
-        /* NORMAL STATE: Slightly increased to 0.12 for visibility */
         opacity: 0.12; 
         word-break: break-all; overflow: hidden;
         z-index: 0; pointer-events: none;
@@ -129,41 +130,111 @@
     }
     @keyframes geneScan { 0% { top: -100%; } 100% { top: 200%; } }
 
-    .card-content { position: relative; z-index: 2; /* Increased Z-index to sit well above BG */ }
-
-    @media (hover: hover) { 
-        /* PERFECT BALANCE HOVER EFFECT */
-        .feature-card:hover { 
-            border-color: var(--jade); 
-            /* REFINED: More translucent teal gradient (opacity reduced from 0.6 to 0.35) */
-            background: linear-gradient(180deg, rgba(0, 63, 79, 0.35) 0%, rgba(139, 198, 160, 0.1) 100%);
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 40px rgba(139, 198, 160, 0.15), 0 0 20px rgba(139, 198, 160, 0.05);
-        } 
-        
-        /* HOVER STATE: Strictly limited opacity to prevent washout */
-        .feature-card:hover .gene-decode-bg { 
-            opacity: 0.12; /* Kept same as normal or slightly adjusted, definitely not brighter */
-            text-shadow: none; 
-        }
-
-        /* TEXT POP: Heavy shadow for max readability over data stream */
-        .feature-card:hover .item-desc { 
-            color: #ffffff; 
-            text-shadow: 0 2px 8px rgba(0,0,0,0.95); /* Strong shadow */
-        }
-        
-        /* Title Pop */
-        .feature-card:hover .item-title {
-             color: var(--jade);
-             text-shadow: 0 2px 8px rgba(0,0,0,0.95); /* Strong shadow */
-        }
+    /* === SECTION 3: SOURCE INJECTION EFFECT === */
+    .effect-injection {
+        position: absolute; inset: 0; z-index: 0; pointer-events: none;
+        overflow: hidden;
     }
+
+    /* 1. Progress Bar (Dim at bottom) */
+    .source-progress {
+        position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
+        background: rgba(139, 198, 160, 0.2);
+        box-shadow: 0 -1px 2px rgba(139, 198, 160, 0.05);
+        transition: all 0.3s ease;
+    }
+    /* Pulse */
+    .source-progress::after {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: progShine 3s infinite;
+    }
+    @keyframes progShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+    /* 2. Code Rain (Falls on Hover) */
+    .source-rain {
+        position: absolute; inset: 0;
+        display: flex; justify-content: space-around;
+        opacity: 0; transition: opacity 0.3s;
+        /* Fade top and bottom */
+        mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    
+    .rain-col {
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        line-height: 12px;
+        color: var(--terminal-green);
+        white-space: nowrap;
+        opacity: 0.6;
+        text-shadow: 0 0 3px var(--terminal-green);
+        /* Animation duration set by JS */
+        animation: rainFall 2s linear infinite;
+    }
+    
+    @keyframes rainFall {
+        from { transform: translateY(-100%); }
+        to { transform: translateY(100%); }
+    }
+
+    /* 3. Liquid Fill (Surges on Hover) */
+    .source-fill {
+        position: absolute; bottom: 0; left: 0; width: 100%; height: 0%;
+        /* Liquid Gradient */
+        background: linear-gradient(to top, rgba(139, 198, 160, 0.6) 0%, rgba(51, 255, 51, 0.1) 80%, transparent 100%);
+        transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        
+        /* Surface Line & Glow */
+        border-top: 2px solid #ffffff; 
+        box-shadow: 0 0 25px rgba(51, 255, 51, 0.4), inset 0 10px 20px rgba(51, 255, 51, 0.2);
+    }
+
+    .card-content { position: relative; z-index: 2; }
+
+    /* === INTERACTIVE STATES === */
+    
+    /* Base Hover */
+    .feature-card:hover, .feature-card.expanded { 
+        border-color: var(--jade); 
+        background: linear-gradient(180deg, rgba(0, 63, 79, 0.35) 0%, rgba(139, 198, 160, 0.1) 100%);
+        transform: translateY(-8px); 
+        box-shadow: 0 15px 40px rgba(139, 198, 160, 0.15), 0 0 20px rgba(139, 198, 160, 0.05);
+    } 
+    
+    /* Section 2: Opacity Lock */
+    .feature-card:hover .gene-decode-bg, .feature-card.expanded .gene-decode-bg { 
+        opacity: 0.12; text-shadow: none; 
+    }
+
+    /* Section 3: INJECTION ACTIVATION */
+    /* 1. Bar Lights Up */
+    .feature-card:hover .source-progress, .feature-card.expanded .source-progress {
+        background: var(--jade);
+        box-shadow: 0 0 10px var(--jade);
+        height: 4px;
+        opacity: 0; transition-delay: 0.3s; /* Fade out as liquid covers */
+    }
+    
+    /* 2. Rain Falls */
+    .feature-card:hover .source-rain, .feature-card.expanded .source-rain {
+        opacity: 0.5;
+    }
+    
+    /* 3. Liquid Surges */
+    .feature-card:hover .source-fill, .feature-card.expanded .source-fill {
+        height: 100%;
+        transition-delay: 0.1s;
+    }
+
+    /* Text Readability (Strong Shadow) */
+    .feature-card:hover .item-desc, .feature-card.expanded .item-desc { color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.95); }
+    .feature-card:hover .item-title, .feature-card.expanded .item-title { color: var(--jade); text-shadow: 0 2px 8px rgba(0,0,0,0.95); }
     
     .item-title { font-size: 1.6rem; font-weight: 300; color: var(--sand); transition: 0.8s; }
     .item-desc { font-size: 1.1rem; color: var(--text-dim); font-weight: 300; line-height: 1.7; max-height: 0; opacity: 0; overflow: hidden; transition: all 0.8s; }
     .feature-card.expanded .item-desc { max-height: 300px; opacity: 1; margin-top: 16px; }
-    .feature-card.expanded .item-title { color: var(--jade); text-shadow: 0 0 10px rgba(139, 198, 160, 0.5); }
     .feature-card::after { content: '+'; position: absolute; bottom: 20px; right: 20px; color: var(--goldfire); font-size: 1.5rem; font-weight: 200; transition: 0.6s; pointer-events: none; z-index: 2; }
     .feature-card.expanded::after { transform: rotate(45deg); color: var(--jade); }
     .reveal { opacity: 0; transform: translateY(40px); transition: 1.5s; }
@@ -293,6 +364,7 @@
       background: linear-gradient(90deg, transparent 0%, transparent 100%); 
       transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
       text-shadow: 0 0 5px rgba(139, 198, 160, 0.3);
+      padding: 12px;
     }
 
     @media (hover: hover) {
@@ -413,25 +485,49 @@
       </div>
     </section>
 
+    <!-- SECTION 3: APPLICATIONS (WITH SOURCE INJECTION EFFECT) -->
     <section class="section" style="padding-bottom: 0;"> <h2 class="reveal">Applications</h2>
-
       <div class="grid-container">
+        <!-- App 1 -->
         <div class="card-wrapper reveal" style="transition-delay: 0s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <span class="item-title">Genetic Medicines</span>
-            <p class="item-desc">Engineered for durable, well-behaved gene function.</p>
+            <div class="effect-injection">
+                <div class="source-rain"></div>
+                <div class="source-fill"></div>
+                <div class="source-progress"></div>
+            </div>
+            <div class="card-content">
+                <span class="item-title">Genetic Medicines</span>
+                <p class="item-desc">Engineered for durable, well-behaved gene function.</p>
+            </div>
           </div>
         </div>
+        <!-- App 2 -->
         <div class="card-wrapper reveal" style="transition-delay: 0.3s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <span class="item-title">Engineered Cells</span>
-            <p class="item-desc">Behavior defined at the point of installation.</p>
+            <div class="effect-injection">
+                <div class="source-rain"></div>
+                <div class="source-fill"></div>
+                <div class="source-progress"></div>
+            </div>
+            <div class="card-content">
+                <span class="item-title">Engineered Cells</span>
+                <p class="item-desc">Behavior defined at the point of installation.</p>
+            </div>
           </div>
         </div>
+        <!-- App 3 -->
         <div class="card-wrapper reveal" style="transition-delay: 0.6s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <span class="item-title">Modality-Agnostic</span>
-            <p class="item-desc">Built to plug into any modern non-viral stack.</p>
+            <div class="effect-injection">
+                <div class="source-rain"></div>
+                <div class="source-fill"></div>
+                <div class="source-progress"></div>
+            </div>
+            <div class="card-content">
+                <span class="item-title">Modality-Agnostic</span>
+                <p class="item-desc">Built to plug into any modern non-viral stack.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -588,16 +684,37 @@
         el.innerText = generateGeneString(4000);
     });
 
-    // Start Live Decoding Animation (Slower: 300ms) - Increased speed to 50ms per user request
+    // Start Live Decoding Animation (Slower: 300ms) - Increased speed to 190ms per user request
     setInterval(() => {
         document.querySelectorAll('.gene-decode-bg').forEach(el => {
             // Regeneration to simulate live processing
              el.innerText = generateGeneString(4000);
         });
-    }, 50);
+    }, 190);
+
+    // 5. SOURCE INJECTION LOGIC (New for v4.5)
+    function initSourceInjection() {
+        document.querySelectorAll('.source-rain').forEach(container => {
+            container.innerHTML = '';
+            // Create columns of rain
+            for(let i=0; i<15; i++) {
+                const col = document.createElement('div');
+                col.className = 'rain-col';
+                // Random text content
+                col.innerText = generateGeneString(20);
+                // Randomize animation duration/delay
+                col.style.animationDuration = `${1.5 + Math.random() * 2}s`;
+                col.style.animationDelay = `-${Math.random() * 2}s`;
+                // Random opacity for depth
+                col.style.opacity = 0.4 + Math.random() * 0.4;
+                container.appendChild(col);
+            }
+        });
+    }
+    initSourceInjection();
 
      // ----------------------------------------------------
-    // 5. SECURE AI Logic (Via Cloudflare Worker Proxy)
+    // 6. SECURE AI Logic (Via Cloudflare Worker Proxy)
     // ----------------------------------------------------
     const terminalOverlay = document.getElementById('terminalOverlay');
     const terminalOutput = document.getElementById('terminalOutput');

@@ -34,9 +34,9 @@
     body {
       background-color: var(--deep-space);
       background-image:
-        radial-gradient(circle at 10% 0%, rgba(247, 169, 74, 0.12), transparent 55%),
-        radial-gradient(circle at 80% 8%, rgba(139, 198, 160, 0.08), transparent 60%),
-        radial-gradient(circle at 50% 90%, rgba(0, 63, 79, 0.6), transparent 70%);
+        radial-gradient(circle at 10% 0%, rgba(247, 169, 74, 0.05), transparent 55%),
+        radial-gradient(circle at 80% 8%, rgba(139, 198, 160, 0.05), transparent 60%),
+        radial-gradient(circle at 50% 90%, rgba(0, 63, 79, 0.3), transparent 70%);
       color: var(--text-main);
       font-family: var(--font-main);
       min-height: 100vh;
@@ -60,9 +60,9 @@
 
     /* Background FX */
     .sky, .stars, .halo { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
-    .sky { z-index: -3; background: radial-gradient(circle at 20% 20%, rgba(247, 169, 74, 0.15), transparent 50%), radial-gradient(circle at 80% 20%, rgba(139, 198, 160, 0.1), transparent 50%); animation: skyHueBreath 20s ease-in-out infinite alternate; }
+    .sky { z-index: -3; background: radial-gradient(circle at 20% 20%, rgba(247, 169, 74, 0.1), transparent 50%), radial-gradient(circle at 80% 20%, rgba(139, 198, 160, 0.05), transparent 50%); animation: skyHueBreath 20s ease-in-out infinite alternate; }
     .stars { z-index: -2; opacity: 0.6; animation: drift 60s linear infinite; background-image: radial-gradient(1px 1px at 15% 15%, rgba(217, 198, 163, 0.8), transparent), radial-gradient(1.5px 1.5px at 35% 75%, rgba(247, 169, 74, 0.6), transparent), radial-gradient(1px 1px at 75% 25%, rgba(217, 198, 163, 0.7), transparent); }
-    .halo { width: 600px; height: 600px; left: 50%; top: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(247, 169, 74, 0.33), transparent 65%); filter: blur(50px); mix-blend-mode: screen; animation: haloBreath 6s ease-in-out infinite alternate; }
+    .halo { width: 600px; height: 600px; left: 50%; top: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(247, 169, 74, 0.2), transparent 65%); filter: blur(50px); mix-blend-mode: screen; animation: haloBreath 6s ease-in-out infinite alternate; }
 
     @keyframes haloBreath { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.4; } 100% { transform: translate(-50%, -50%) scale(1.33); opacity: 0.9; } }
     @keyframes drift { from { background-position: 0 0; } to { background-position: -50px -100px; } }
@@ -76,12 +76,64 @@
     .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
     .hero-tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--goldfire); margin-bottom: 24px; display: inline-block; border: 1px solid rgba(247, 169, 74, 0.3); padding: 6px 14px; border-radius: 100px; backdrop-filter: blur(4px); }
     .hero-title { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 200; line-height: 1.1; margin-bottom: 48px; color: var(--sand); }
-    .hero-title strong { font-weight: 800; color: #fff; display: block; }
-    .hacker-text { font-family: var(--font-main); font-weight: 800; letter-spacing: 0.05em; display: inline-block; opacity: 0; transition: opacity 0.1s; }
+    
+    /* --- FIX: Added min-height to prevent jumping --- */
+    .hero-title strong { 
+        font-weight: 800; 
+        color: #fff; 
+        display: block; 
+        min-height: 1.1em; /* KEY FIX: Reserves vertical space before text appears */
+    }
+    
+    /* --- INTEGRATED HACKER TEXT EFFECT --- */
+    .hacker-text { 
+        font-family: var(--font-main); 
+        font-weight: 800; 
+        letter-spacing: 0.05em; 
+        display: inline-block; 
+        opacity: 0; 
+        transition: opacity 0.1s;
+    }
     .hacker-text.visible { opacity: 1; }
-    .char-decoding { color: var(--jade); text-shadow: 0 0 8px rgba(139, 198, 160, 0.8); }
-    .char-resolved { color: #ffffff; animation: goldBurst 3s ease-out forwards; }
-    @keyframes goldBurst { 0% { text-shadow: 0 0 15px #fff, 0 0 30px #F7A94A; color: #fff; } 100% { color: #fff; text-shadow: none; } }
+    
+    .char-decoding { 
+        color: var(--jade); 
+        text-shadow: 0 0 8px rgba(139, 198, 160, 0.8); 
+        display: inline-block;
+    }
+    
+    .char-resolved { 
+        color: #ffffff; 
+        display: inline-block;
+    }
+    
+    .hacker-text.burst-effect .char-resolved {
+        animation: goldBurst 3s ease-out forwards;
+    }
+
+    @keyframes goldBurst {
+      0% { 
+        text-shadow: 0 0 15px #fff, 0 0 30px #F7A94A, 0 0 60px #F7A94A; 
+        color: #ffffff; 
+        filter: brightness(2); 
+        transform: scale(1.05); 
+      }
+      10% { 
+        transform: scale(1); 
+        filter: brightness(1.5); 
+      }
+      50% { 
+        text-shadow: 0 0 15px rgba(247, 169, 74, 0.5); 
+        filter: brightness(1.1); 
+      }
+      100% { 
+        color: #ffffff; 
+        text-shadow: none; 
+        filter: brightness(1); 
+      }
+    }
+    /* ----------------------------------------------- */
+
     .hero-lines { display: flex; flex-direction: column; gap: 20px; border-left: 2px solid var(--goldfire); padding-left: 32px; max-width: 800px; font-size: 1.8rem; color: var(--sand); }
     
     .architect-btn { margin-top: 48px; align-self: flex-start; background: rgba(247, 169, 74, 0.05); border: 1px solid var(--goldfire); color: var(--goldfire); font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 32px; cursor: pointer; border-radius: 4px; transition: all 0.6s ease; display: flex; align-items: center; gap: 12px; animation: bioPulseDeep 10s ease-in-out infinite; }
@@ -96,6 +148,7 @@
     .grid-container { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 40px; }
     @media (min-width: 1024px) { .grid-container { grid-template-columns: repeat(3, 1fr); gap: 60px; align-items: stretch; margin-top: 60px; } }
     
+    /* Common Feature Card */
     .feature-card { 
         padding: 32px; min-height: 240px; 
         border: 1px solid var(--glass-border); 
@@ -104,24 +157,21 @@
         position: relative; overflow: hidden; 
         display: flex; flex-direction: column; justify-content: space-between; 
         cursor: pointer; 
-        -webkit-tap-highlight-color: transparent; /* Remove highlight on mobile */
+        -webkit-tap-highlight-color: transparent;
     }
     
-    /* === SECTION 2: GENE DECODE STREAM (ENHANCED) === */
+    /* GENE DECODE STREAM (Section 2 Only) */
     .gene-decode-bg {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        /* UPDATED: Increased Font Size for Density */
         font-family: var(--font-mono); font-size: 15px; line-height: 15px;
         color: var(--terminal-green); 
-        opacity: 0.12; 
+        opacity: 0.135; 
         word-break: break-all; overflow: hidden;
         z-index: 0; pointer-events: none;
         user-select: none;
         transition: opacity 0.4s ease;
         mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
     }
-    
-    /* Scanline Animation */
     .gene-decode-bg::after {
         content: ""; position: absolute; top: -100%; left: 0; width: 100%; height: 40%;
         background: linear-gradient(to bottom, transparent, rgba(51, 255, 51, 0.4) 90%, rgba(200, 255, 200, 0.1));
@@ -130,72 +180,109 @@
     }
     @keyframes geneScan { 0% { top: -100%; } 100% { top: 200%; } }
 
-    /* === SECTION 3: SOURCE INJECTION EFFECT === */
-    .effect-injection {
-        position: absolute; inset: 0; z-index: 0; pointer-events: none;
-        overflow: hidden;
+    /* === [EVENT_HORIZON] EFFECT (Section 3 Shared) === */
+    .effect-horizon {
+        position: absolute; inset: 0; z-index: 0; overflow: hidden;
+        background: radial-gradient(circle at center, rgba(2, 8, 12, 0.9) 0%, transparent 80%);
+        transition: all 0.8s ease;
     }
 
-    /* 1. Progress Bar (Dim at bottom) */
-    .source-progress {
-        position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
-        background: rgba(139, 198, 160, 0.2);
-        box-shadow: 0 -1px 2px rgba(139, 198, 160, 0.05);
-        transition: all 0.3s ease;
+    .void-core {
+        position: absolute; top: 50%; left: 50%;
+        width: 60px; height: 60px;
+        border-radius: 50%;
+        background: #000;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 20px rgba(139, 198, 160, 0.2);
+        z-index: 2;
+        transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
     }
-    /* Pulse */
-    .source-progress::after {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        animation: progShine 3s infinite;
-    }
-    @keyframes progShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-    /* 2. Code Rain (Falls on Hover) */
-    .source-rain {
-        position: absolute; inset: 0;
-        display: flex; justify-content: space-around;
-        opacity: 0; transition: opacity 0.3s;
-        /* Fade top and bottom */
-        mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    .void-halo {
+        position: absolute; top: 50%; left: 50%;
+        width: 140px; height: 140px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background: conic-gradient(from 0deg, transparent 0%, rgba(139, 198, 160, 0.15) 30%, transparent 100%);
+        opacity: 0.3;
+        animation: haloSpin 30s linear infinite;
+        transition: all 1s ease;
+        z-index: 1;
+    }
+
+    .void-stars {
+        position: absolute; inset: -50%;
+        background-image: radial-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.05;
+        transform: scale(1);
+        transition: transform 1s ease-out, opacity 0.5s;
+        z-index: 0;
+    }
+
+    /* === [GENETIC_SPHERE] (ATGC Sphere) === */
+    .atgc-sphere-container {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        perspective: 800px;
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0); 
+        transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        z-index: 3;
+        display: flex; justify-content: center; align-items: center;
     }
     
-    .rain-col {
-        writing-mode: vertical-rl;
-        text-orientation: upright;
+    .atgc-wrapper {
+        position: relative;
+        width: 110px; height: 110px; 
+        margin-top: 40px; 
+        transform-style: preserve-3d;
+        animation: sphereSpin 20s linear infinite;
+    }
+    
+    .atgc-particle {
+        position: absolute;
+        left: 50%; top: 50%;
+        width: 14px; height: 14px;
+        line-height: 14px;
+        text-align: center;
         font-family: var(--font-mono);
         font-size: 11px;
-        line-height: 12px;
-        color: var(--terminal-green);
-        white-space: nowrap;
-        opacity: 0.6;
-        text-shadow: 0 0 3px var(--terminal-green);
-        /* Animation duration set by JS */
-        animation: rainFall 2s linear infinite;
+        font-weight: 800;
+        color: var(--jade);
+        text-shadow: 0 0 4px rgba(139, 198, 160, 0.6);
+        backface-visibility: visible; 
+        transform-style: preserve-3d;
+        transition: color 0.2s, text-shadow 0.2s, transform 0.2s;
+    }
+
+    .atgc-particle.gold-flash {
+        color: var(--goldfire);
+        text-shadow: 0 0 12px var(--goldfire), 0 0 25px #fff;
+        transform: scale(1.4) translate3d(var(--tx), var(--ty), var(--tz)); 
+        z-index: 10;
     }
     
-    @keyframes rainFall {
-        from { transform: translateY(-100%); }
-        to { transform: translateY(100%); }
+    .sphere-core {
+        position: absolute; top: 50%; left: 50%;
+        width: 12px; height: 12px;
+        background: #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 20px var(--goldfire), 0 0 40px var(--goldfire);
+        animation: nucleusPulse 2s infinite alternate;
     }
 
-    /* 3. Liquid Fill (Surges on Hover) */
-    .source-fill {
-        position: absolute; bottom: 0; left: 0; width: 100%; height: 0%;
-        /* Liquid Gradient */
-        background: linear-gradient(to top, rgba(139, 198, 160, 0.6) 0%, rgba(51, 255, 51, 0.1) 80%, transparent 100%);
-        transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        
-        /* Surface Line & Glow */
-        border-top: 2px solid #ffffff; 
-        box-shadow: 0 0 25px rgba(51, 255, 51, 0.4), inset 0 10px 20px rgba(51, 255, 51, 0.2);
+    @keyframes haloSpin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+    @keyframes nucleusPulse { 0%, 100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; box-shadow: 0 0 50px var(--goldfire); } }
+    @keyframes sphereSpin {
+        0% { transform: rotateX(10deg) rotateY(0deg); }
+        100% { transform: rotateX(10deg) rotateY(360deg); }
     }
 
-    .card-content { position: relative; z-index: 2; }
+    .card-content { position: relative; z-index: 4; }
 
     /* === INTERACTIVE STATES === */
-    
-    /* Base Hover */
     .feature-card:hover, .feature-card.expanded { 
         border-color: var(--jade); 
         background: linear-gradient(180deg, rgba(0, 63, 79, 0.35) 0%, rgba(139, 198, 160, 0.1) 100%);
@@ -203,36 +290,32 @@
         box-shadow: 0 15px 40px rgba(139, 198, 160, 0.15), 0 0 20px rgba(139, 198, 160, 0.05);
     } 
     
-    /* Section 2: Opacity Lock */
-    .feature-card:hover .gene-decode-bg, .feature-card.expanded .gene-decode-bg { 
-        opacity: 0.12; text-shadow: none; 
+    .feature-card:hover .gene-decode-bg { opacity: 0.135; }
+    .feature-card.expanded .gene-decode-bg { opacity: 0 !important; }
+
+    .feature-card:hover .void-core { width: 300%; height: 300%; opacity: 0.6; background: radial-gradient(circle, rgba(0, 63, 79, 0.9) 0%, rgba(0, 0, 0, 0.8) 100%); box-shadow: inset 0 0 80px rgba(0, 0, 0, 1); }
+    .feature-card:hover .void-halo { width: 200%; height: 200%; opacity: 0.3; background: radial-gradient(circle, transparent 40%, rgba(139, 198, 160, 0.2) 60%, transparent 80%); }
+    .feature-card:hover .void-stars { transform: scale(30); opacity: 0; }
+    .feature-card:hover .atgc-sphere-container { opacity: 1; transform: scale(1.1); }
+
+    .feature-card.expanded {
+        background: #02080C !important;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.9) !important;
+        z-index: 10;
+    }
+    .feature-card.expanded .effect-horizon { opacity: 0 !important; pointer-events: none; }
+    .feature-card.expanded .atgc-sphere-container { 
+        opacity: 0 !important; pointer-events: none; 
     }
 
-    /* Section 3: INJECTION ACTIVATION */
-    /* 1. Bar Lights Up */
-    .feature-card:hover .source-progress, .feature-card.expanded .source-progress {
-        background: var(--jade);
-        box-shadow: 0 0 10px var(--jade);
-        height: 4px;
-        opacity: 0; transition-delay: 0.3s; /* Fade out as liquid covers */
+    .feature-card:hover .item-desc, .feature-card.expanded .item-desc { 
+        color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,1); 
+    }
+    .feature-card:hover .item-title, .feature-card.expanded .item-title {
+         color: var(--jade); text-shadow: 0 2px 10px rgba(0,0,0,1);
     }
     
-    /* 2. Rain Falls */
-    .feature-card:hover .source-rain, .feature-card.expanded .source-rain {
-        opacity: 0.5;
-    }
-    
-    /* 3. Liquid Surges */
-    .feature-card:hover .source-fill, .feature-card.expanded .source-fill {
-        height: 100%;
-        transition-delay: 0.1s;
-    }
-
-    /* Text Readability (Strong Shadow) */
-    .feature-card:hover .item-desc, .feature-card.expanded .item-desc { color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.95); }
-    .feature-card:hover .item-title, .feature-card.expanded .item-title { color: var(--jade); text-shadow: 0 2px 8px rgba(0,0,0,0.95); }
-    
-    .item-title { font-size: 1.6rem; font-weight: 300; color: var(--sand); transition: 0.8s; }
+    .item-title { font-size: 1.6rem; font-weight: 300; color: var(--sand); transition: 0.8s; margin-bottom: 0; }
     .item-desc { font-size: 1.1rem; color: var(--text-dim); font-weight: 300; line-height: 1.7; max-height: 0; opacity: 0; overflow: hidden; transition: all 0.8s; }
     .feature-card.expanded .item-desc { max-height: 300px; opacity: 1; margin-top: 16px; }
     .feature-card::after { content: '+'; position: absolute; bottom: 20px; right: 20px; color: var(--goldfire); font-size: 1.5rem; font-weight: 200; transition: 0.6s; pointer-events: none; z-index: 2; }
@@ -259,93 +342,90 @@
     @media (hover: hover) { .terminal-close:hover { opacity: 1; } }
     .terminal-body { padding: 32px; min-height: 500px; display: flex; flex-direction: column; gap: 10px; }
     
-    /* UPDATED: Refined Prompt & Input Styling */
-    .terminal-prompt { margin-bottom: 10px; color: var(--sand); font-size: 0.9rem; } 
-    .ai-input-group { position: relative; margin-bottom: 10px; }
+    .terminal-prompt { margin-bottom: 10px; color: var(--sand); font-size: 0.9rem; flex-shrink: 0; }
     
-    /* UPDATED: Smaller font size for input */
+    /* UPDATED: AI INPUT GROUP FLEXBOX FOR MOBILE */
+    .ai-input-group { 
+        position: relative; margin-bottom: 10px; 
+        display: flex; 
+        align-items: center; 
+        border-bottom: 1px solid var(--text-dim); 
+        transition: border-color 0.3s ease; 
+        flex-shrink: 0;
+        flex-wrap: wrap; 
+    }
+    
+    .prompt-char { 
+        color: var(--text-dim); font-family: var(--font-mono); 
+        margin-right: 8px; font-weight: 700; transition: color 0.3s; 
+        white-space: nowrap; 
+    }
+    .prompt-char.active-mode { color: var(--jade); animation: blinkJade 1s step-end infinite; }
+    @keyframes blinkJade { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+    
     .ai-input { 
-      width: 100%; 
-      background: transparent; 
-      border: none; 
-      border-bottom: 1px solid var(--text-dim); 
-      color: #fff; 
-      font-family: var(--font-mono); 
-      font-size: 0.95rem; 
-      padding: 10px 0; 
-      padding-right: 90px; 
-      outline: none; 
+      flex: 1; 
+      min-width: 100px; 
+      background: transparent; border: none; 
+      color: #fff; font-family: var(--font-mono); font-size: 0.95rem; 
+      padding: 10px 0; outline: none; 
       transition: border-color 0.3s; 
     }
     .ai-input:focus { border-color: var(--goldfire); }
     .ai-input::placeholder { color: rgba(255, 255, 255, 0.2); }
     
-    .generate-btn { position: absolute; right: 0; bottom: 12px; background: none; border: 1px solid var(--goldfire); color: var(--goldfire); font-family: var(--font-mono); padding: 4px 12px; font-size: 0.75rem; cursor: pointer; opacity: 0.8; }
+    .generate-btn { 
+        background: none; border: 1px solid var(--goldfire); 
+        color: var(--goldfire); font-family: var(--font-mono); 
+        padding: 6px 12px; font-size: 0.75rem; 
+        cursor: pointer; opacity: 0.8; 
+        margin-left: 8px;
+        white-space: nowrap; 
+    }
     @media (hover: hover) {
       .generate-btn:hover { background: var(--goldfire); color: #000; }
     }
+
+    /* MOBILE SPECIFIC OVERRIDES */
+    @media (max-width: 768px) {
+        .ai-input-group {
+             flex-direction: row; 
+             border-bottom: 1px solid var(--text-dim); 
+             padding-bottom: 4px;
+        }
+        .prompt-char { display: block; }
+        .ai-input {
+             border-bottom: none; 
+             margin-bottom: 0;
+             padding: 10px 0;
+        }
+        .generate-btn {
+             position: relative;
+             margin: 0 0 0 8px;
+             width: auto;
+             border-color: var(--jade); color: var(--jade);
+             padding: 6px 12px;
+             bottom: auto; right: auto;
+        }
+        .ai-input-group.active-mode { border-color: var(--jade); }
+    }
     
     .terminal-output { 
-      flex-grow: 1; 
-      border-top: 1px dashed rgba(255, 255, 255, 0.1); 
-      padding-top: 24px; 
-      font-size: 0.9rem; 
-      line-height: 1.6; 
-      color: var(--text-dim); 
-      overflow-y: auto; 
-      max-height: 300px; 
-      white-space: pre-line; 
-      margin-bottom: 10px;
+      flex-grow: 1; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 24px; 
+      font-size: 0.9rem; line-height: 1.6; color: var(--text-dim); overflow-y: auto; max-height: 300px; white-space: pre-line; margin-bottom: 10px; 
     }
     .terminal-output a { color: var(--jade); text-decoration: none; border-bottom: 1px solid var(--jade); transition: all 0.3s; }
     .terminal-output a:hover { background: rgba(139, 198, 160, 0.2); box-shadow: 0 0 10px var(--jade); }
     
-    /* Conversation Mode - Chat Bubbles */
     .msg-user { color: var(--goldfire); margin-top: 10px; opacity: 0.8; }
+    .history-prompt { color: var(--jade); animation: blinkJade 1s step-end infinite; margin-right: 8px; }
     .msg-ai { color: var(--text-dim); margin-bottom: 10px; }
-
-    /* Updated AI Button Container: SINGLE COLUMN FOR SIMPLICITY */
-    .ai-actions {
-      display: grid; 
-      grid-template-columns: 1fr; /* Full width column since we only have 1 button now */
-      gap: 0; 
-      width: 100%;
-      min-height: 40px;
-    }
-
-    .sim-btn {
-        width: 100%;
-        height: 100%;
-        padding: 8px 0;
-        border: 1px solid rgba(139, 198, 160, 0.3);
-        color: var(--jade);
-        background: rgba(139, 198, 160, 0.05);
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-align: center;
-        white-space: normal;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .sim-btn:hover {
-        background: var(--jade);
-        color: #000;
-        box-shadow: 0 0 15px rgba(139, 198, 160, 0.4);
-    }
     
-    .sim-btn.danger {
-        border-color: rgba(255, 107, 107, 0.3);
-        color: var(--danger);
-        background: rgba(255, 107, 107, 0.05);
-    }
-    .sim-btn.danger:hover {
-        background: var(--danger);
-        color: #fff;
-        box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
-    }
+    .ai-actions { display: grid; grid-template-columns: 1fr; gap: 0; width: 100%; min-height: 40px; }
+    .sim-btn { width: 100%; height: 100%; padding: 8px 0; border: 1px solid rgba(139, 198, 160, 0.3); color: var(--jade); background: rgba(139, 198, 160, 0.05); font-family: var(--font-mono); font-size: 0.75rem; cursor: pointer; transition: all 0.3s; text-align: center; white-space: normal; display: flex; align-items: center; justify-content: center; }
+    .sim-btn:hover { background: var(--jade); color: #000; box-shadow: 0 0 15px rgba(139, 198, 160, 0.4); }
+    .sim-btn.danger { border-color: rgba(255, 107, 107, 0.3); color: var(--danger); background: rgba(255, 107, 107, 0.05); }
+    .sim-btn.danger:hover { background: var(--danger); color: #fff; box-shadow: 0 0 15px rgba(255, 107, 107, 0.4); }
 
     .typing-cursor::after { content: '▋'; animation: blink 1s infinite; margin-left: 4px; color: var(--jade); }
     .status-line { font-size: 0.7rem; color: var(--jade); margin-bottom: 10px; display: none; }
@@ -354,43 +434,11 @@
     /* Contact Specifics */
     .contact-field-group { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
     .contact-label { font-size: 0.7rem; color: var(--jade); opacity: 0.7; margin-bottom: 8px; display: block; }
-    
-    /* SPECIAL PREMIUM BUTTON STYLE */
-    #handshakeBtn {
-      width: 100%;
-      left: 0;
-      border: 1px solid rgba(139, 198, 160, 0.5); /* Thinner, more subtle border initially */
-      color: var(--jade);
-      background: linear-gradient(90deg, transparent 0%, transparent 100%); 
-      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-      text-shadow: 0 0 5px rgba(139, 198, 160, 0.3);
-      padding: 12px;
-    }
-
-    @media (hover: hover) {
-      #handshakeBtn:hover {
-        background: rgba(139, 198, 160, 0.08) !important; /* Very subtle background fill */
-        border-color: #fff !important;
-        color: #fff !important;
-        box-shadow: 0 0 30px rgba(139, 198, 160, 0.25); /* Diffuse elegant glow */
-        text-shadow: 0 0 10px rgba(139, 198, 160, 0.8);
-        letter-spacing: 0.2em; /* Expands slightly on hover for premium feel */
-      }
-    }
+    #handshakeBtn { width: 100%; border: 1px solid rgba(139, 198, 160, 0.5); color: var(--jade); background: linear-gradient(90deg, transparent 0%, transparent 100%); transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-shadow: 0 0 5px rgba(139, 198, 160, 0.3); padding: 12px; }
+    @media (hover: hover) { #handshakeBtn:hover { background: rgba(139, 198, 160, 0.08) !important; border-color: #fff !important; color: #fff !important; box-shadow: 0 0 30px rgba(139, 198, 160, 0.25); text-shadow: 0 0 10px rgba(139, 198, 160, 0.8); letter-spacing: 0.2em; } }
 
     #fireflies { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    
-    /* OPTIMIZED FIREFLY: Added will-change hint for GPU */
-    .firefly { 
-      position: fixed; 
-      border-radius: 50%; 
-      background: var(--ff-color); 
-      box-shadow: 0 0 15px var(--ff-color); 
-      opacity: 0; 
-      will-change: transform, opacity; /* GPU Hint */
-      animation: ff-float linear infinite, ff-fade ease-in-out infinite; 
-    }
-    
+    .firefly { position: fixed; border-radius: 50%; background: var(--ff-color); box-shadow: 0 0 15px var(--ff-color); opacity: 0; will-change: transform, opacity; animation: ff-float linear infinite, ff-fade ease-in-out infinite; }
     @keyframes ff-float { to { transform: translate3d(var(--tx), var(--ty), 0); } }
     @keyframes ff-fade { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
 
@@ -485,16 +533,22 @@
       </div>
     </section>
 
-    <!-- SECTION 3: APPLICATIONS (WITH SOURCE INJECTION EFFECT) -->
-    <section class="section" style="padding-bottom: 0;"> <h2 class="reveal">Applications</h2>
+    <!-- SECTION 3: APPLICATIONS (UNIFIED ATGC SPHERES) -->
+    <section class="section applications-section" style="padding-bottom: 0;"> <h2 class="reveal">Applications</h2>
       <div class="grid-container">
-        <!-- App 1 -->
+        <!-- App 1: Genetic Medicines -> ATGC Sphere -->
         <div class="card-wrapper reveal" style="transition-delay: 0s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <div class="effect-injection">
-                <div class="source-rain"></div>
-                <div class="source-fill"></div>
-                <div class="source-progress"></div>
+            <div class="effect-horizon">
+                <div class="void-halo"></div>
+                <div class="void-core"></div>
+                <div class="void-stars"></div>
+                <div class="atgc-sphere-container">
+                    <div class="atgc-wrapper">
+                         <div class="sphere-core"></div>
+                         <!-- JS will inject ATGC here -->
+                    </div>
+                </div>
             </div>
             <div class="card-content">
                 <span class="item-title">Genetic Medicines</span>
@@ -502,13 +556,20 @@
             </div>
           </div>
         </div>
-        <!-- App 2 -->
+        
+        <!-- App 2: Engineered Cells -> ATGC Sphere -->
         <div class="card-wrapper reveal" style="transition-delay: 0.3s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <div class="effect-injection">
-                <div class="source-rain"></div>
-                <div class="source-fill"></div>
-                <div class="source-progress"></div>
+            <div class="effect-horizon">
+                <div class="void-halo"></div>
+                <div class="void-core"></div>
+                <div class="void-stars"></div>
+                <div class="atgc-sphere-container">
+                    <div class="atgc-wrapper">
+                         <div class="sphere-core"></div>
+                         <!-- JS will inject ATGC here -->
+                    </div>
+                </div>
             </div>
             <div class="card-content">
                 <span class="item-title">Engineered Cells</span>
@@ -516,13 +577,20 @@
             </div>
           </div>
         </div>
-        <!-- App 3 -->
+        
+        <!-- App 3: Modality-Agnostic -> ATGC Sphere -->
         <div class="card-wrapper reveal" style="transition-delay: 0.6s;">
           <div class="feature-card" onclick="toggleCard(this)">
-            <div class="effect-injection">
-                <div class="source-rain"></div>
-                <div class="source-fill"></div>
-                <div class="source-progress"></div>
+            <div class="effect-horizon">
+                <div class="void-halo"></div>
+                <div class="void-core"></div>
+                <div class="void-stars"></div>
+                <div class="atgc-sphere-container">
+                    <div class="atgc-wrapper">
+                         <div class="sphere-core"></div>
+                         <!-- JS will inject ATGC here -->
+                    </div>
+                </div>
             </div>
             <div class="card-content">
                 <span class="item-title">Modality-Agnostic</span>
@@ -555,6 +623,7 @@
           <p>Define desired biological function for installation protocol generation.</p>
           <p style="font-size: 0.75rem; opacity: 0.6; margin-top: 4px;">Example: "Targeted tumor lysis" or "神經元再生矩陣"</p>
         </div>
+        <!-- UPDATED INPUT GROUP STRUCTURE WITH > SYMBOL -->
         <div class="ai-input-group" id="terminalInputGroup">
           <span id="inputPromptChar" class="prompt-char">></span>
           <input type="text" class="ai-input" id="geneInput" placeholder="Input target function..." autocomplete="off">
@@ -634,7 +703,7 @@
 
     // 2. Parallax (REMOVED per user request for optimization)
 
-    // 3. Hacker Text
+    // 3. INTEGRATED HACKER TEXT LOGIC (From Extracted Version)
     const dnaLetters = "ATCG";
     const hackerElement = document.querySelector(".hacker-text");
     
@@ -679,39 +748,67 @@
         return result;
     }
     
-    // Initial Fill (Increased to 4000 for density)
     document.querySelectorAll('.gene-decode-bg').forEach(el => {
         el.innerText = generateGeneString(4000);
     });
 
-    // Start Live Decoding Animation (Slower: 300ms) - Increased speed to 190ms per user request
     setInterval(() => {
         document.querySelectorAll('.gene-decode-bg').forEach(el => {
-            // Regeneration to simulate live processing
+            // CUSTOM CONFIG: 190ms speed
              el.innerText = generateGeneString(4000);
         });
     }, 190);
 
-    // 5. SOURCE INJECTION LOGIC (New for v4.5)
-    function initSourceInjection() {
-        document.querySelectorAll('.source-rain').forEach(container => {
-            container.innerHTML = '';
-            // Create columns of rain
-            for(let i=0; i<15; i++) {
-                const col = document.createElement('div');
-                col.className = 'rain-col';
-                // Random text content
-                col.innerText = generateGeneString(20);
-                // Randomize animation duration/delay
-                col.style.animationDuration = `${1.5 + Math.random() * 2}s`;
-                col.style.animationDelay = `-${Math.random() * 2}s`;
-                // Random opacity for depth
-                col.style.opacity = 0.4 + Math.random() * 0.4;
-                container.appendChild(col);
+    // 5. UNIFIED ATGC SPHERE GENERATION (For All Cards in Section 3)
+    function initATGCSphere() {
+        document.querySelectorAll('.atgc-wrapper').forEach(container => {
+            if(container.querySelector('.atgc-particle')) return;
+
+            const phi = (1 + Math.sqrt(5)) / 2; // Golden ratio
+            const r = 62.5; // Radius set to 62.5 as requested
+            const count = 80; // Particle count
+            const bases = ['A', 'T', 'G', 'C'];
+            
+            for(let i=0; i<count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'atgc-particle';
+                particle.innerText = bases[Math.floor(Math.random() * bases.length)];
+                
+                // Fibonacci Sphere Algorithm
+                const y = 1 - (i / (count - 1)) * 2; 
+                const radiusAtY = Math.sqrt(1 - y * y);
+                const theta = phi * Math.PI * i; 
+                
+                const x = Math.cos(theta) * radiusAtY;
+                const z = Math.sin(theta) * radiusAtY;
+                
+                particle.style.transform = `translate3d(${x * r}px, ${y * r}px, ${z * r}px)`;
+                // Store coords for animation
+                particle.style.setProperty('--tx', `${x * r}px`);
+                particle.style.setProperty('--ty', `${y * r}px`);
+                particle.style.setProperty('--tz', `${z * r}px`);
+                
+                container.appendChild(particle);
             }
+            
+            // Start Golden Flash Loop - Data Stream
+            setInterval(() => {
+                const particles = container.querySelectorAll('.atgc-particle');
+                // Pick random 3-5 particles
+                const pickCount = 3 + Math.floor(Math.random() * 3);
+                for(let k=0; k<pickCount; k++) {
+                      const idx = Math.floor(Math.random() * particles.length);
+                      const p = particles[idx];
+                      p.classList.add('gold-flash');
+                      // Remove class after animation
+                      setTimeout(() => p.classList.remove('gold-flash'), 500);
+                }
+            }, 100); // Faster stream frequency
         });
     }
-    initSourceInjection();
+    
+    // Removed specific DNA and Cell init functions as all are spheres now
+    initATGCSphere();
 
      // ----------------------------------------------------
     // 6. SECURE AI Logic (Via Cloudflare Worker Proxy)
@@ -877,7 +974,7 @@
         if (!userQ || !currentProtocolContext) return;
 
         // Display User Msg
-        terminalOutput.innerHTML += `<div class="msg-user">> ${userQ}</div>`;
+        terminalOutput.innerHTML += `<div class="msg-user"><span class="history-prompt">></span> ${userQ}</div>`;
         terminalOutput.scrollTop = terminalOutput.scrollHeight; // Force Scroll on user input
         
         geneInput.value = '';
@@ -915,7 +1012,7 @@
             });
 
         } catch (error) {
-             handleSystemError(error, terminalOutput);
+              handleSystemError(error, terminalOutput);
         }
     }
 
@@ -970,7 +1067,7 @@
             });
 
         } catch (error) {
-             handleSystemError(error, terminalOutput);
+              handleSystemError(error, terminalOutput);
         }
     }
     

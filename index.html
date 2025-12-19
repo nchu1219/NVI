@@ -50,7 +50,7 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
-    /* Nav - Hidden behind teaser but kept for structure */
+    /* Nav */
     nav {
       position: fixed; top: 0; left: 0; width: 100%; padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100;
       transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000), background-color 0.3s ease;
@@ -486,6 +486,15 @@
         display: flex; flex-direction: column; justify-content: center; align-items: center;
         text-align: center;
         padding: 20px;
+        /* UPDATED: Add transition support for hidden class */
+        transition: opacity 1.2s ease, visibility 1.2s ease;
+    }
+    
+    /* NEW: Hidden Class for Backdoor Access */
+    .hidden {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
     }
 
     /* Lock Ring Animation */
@@ -615,7 +624,8 @@
       <div class="landing-lock-ring"></div>
       
       <!-- No Logo. Just silence. -->
-      <h1 class="landing-title">SEQUENCE</h1>
+      <!-- UPDATED: Title changed to VECTOR -->
+      <h1 class="landing-title">VECTOR</h1>
       <div class="landing-subtitle">RESTRICTED ENVIRONMENT</div>
 
       <div class="landing-status-box" id="landingLogBox">
@@ -623,8 +633,8 @@
       </div>
 
       <div class="landing-form">
-          <input type="email" class="landing-input" placeholder="IDENTITY_KEY" id="accessEmail">
-          <button class="landing-btn" onclick="requestAccess()">ESTABLISH_LINK</button>
+          <input type="text" class="landing-input" placeholder="IDENTITY (EMAIL)" id="accessEmail">
+          <button class="landing-btn" onclick="requestAccess()">REQUEST_ACCESS</button>
       </div>
       
       <div class="landing-footer">
@@ -642,7 +652,7 @@
 
   <!-- Main Nav (Hidden visually by Landing Layer but exists in DOM) -->
   <nav id="mainNav">
-    <div class="brand"></div> <!-- Removed Brand Text -->
+    <div class="brand">UNOEXON</div>
     <div class="nav-links">
     </div>
   </nav>
@@ -654,23 +664,22 @@
       <div style="margin-bottom: auto;"></div>
       
       <div class="content">
-        <!-- Removed "GENETIC INSTALLATION LAYER" tag -->
-        <div class="hero-tag reveal" style="opacity: 0;"></div> 
+        <div class="hero-tag reveal">GENETIC INSTALLATION LAYER</div>
         
         <h1 class="hero-title reveal">
-          <!-- Obscured Title -->
-          <br>
-          <strong class="hacker-text" data-value="///"></strong>
+          Genetic Function, <br>
+          <strong class="hacker-text" data-value="INSTALLED"></strong>
         </h1>
 
         <div class="hero-lines reveal">
-          <!-- Hidden lines -->
+          <div>Natural expression</div>
+          <div>Silent unless correct</div>
+          <div>Built to last</div>
         </div>
       </div>
       
-      <!-- Hidden Button Text -->
       <button class="architect-btn reveal" onclick="toggleTerminal()" style="transition-delay: 0.8s;">
-        ✨
+        ✨ INITIATE INSTALLATION
       </button>
       
       <div style="margin-bottom: auto;"></div>
@@ -781,19 +790,19 @@
     </footer>
     
     <div class="footer-legal">
-        DISCLAIMER: Conceptual demonstration powered by AI.
+        DISCLAIMER: UnoExon is a conceptual demonstration powered by AI. Generated protocols are for simulation only. Not for medical use.
     </div>
   </div>
 
   <div class="terminal-overlay" id="terminalOverlay">
     <div class="terminal-window">
       <div class="terminal-header">
-        <span class="terminal-title">INTELLIGENT CORE_V4.0 [Online]</span>
+        <span class="terminal-title">UNOEXON // INSTALLATION_INTELLIGENT CORE_V4.0 [Online]</span>
         <span class="terminal-close" onclick="toggleTerminal()">×</span>
       </div>
       <div class="terminal-body">
         <div class="terminal-prompt" id="terminalPrompt">
-          <p>Define desired biological function for protocol generation.</p>
+          <p>Define desired biological function for installation protocol generation.</p>
           <p style="font-size: 0.75rem; opacity: 0.6; margin-top: 4px;">Example: "Targeted tumor lysis" or "神經元再生矩陣"</p>
         </div>
         <!-- UPDATED INPUT GROUP STRUCTURE WITH > SYMBOL -->
@@ -818,7 +827,7 @@
   <div class="terminal-overlay" id="contactOverlay">
     <div class="terminal-window">
       <div class="terminal-header">
-        <span class="terminal-title" style="color: var(--goldfire);">UPLINK // SECURE</span>
+        <span class="terminal-title" style="color: var(--goldfire);">INSTALLATION_UPLINK // SECURE</span>
         <span class="terminal-close" onclick="toggleContactTerminal()">×</span>
       </div>
       <div class="terminal-body">
@@ -829,19 +838,19 @@
             <input type="email" class="ai-input" id="uplinkEmail" placeholder="auth@identity.com" autocomplete="off" style="font-size: 0.9rem;">
           </div>
           <div>
-            <label class="contact-label">PARAMETERS (MESSAGE)</label>
+            <label class="contact-label">INSTALLATION_PARAMETERS (MESSAGE)</label>
             <input type="text" class="ai-input" id="uplinkMsg" placeholder="Input target specifications..." autocomplete="off" style="font-size: 0.9rem;">
           </div>
         </div>
 
         <div style="position: relative; height: 40px;">
            <button class="generate-btn" id="handshakeBtn" onclick="submitContactHandshake()">
-             TRANSMIT REQUEST
+             TRANSMIT INSTALLATION REQUEST
            </button>
         </div>
 
         <div class="terminal-disclaimer" style="border-color: rgba(247, 169, 74, 0.2); color: rgba(247, 169, 74, 0.5);">
-           NOTICE: Uplink is monitored. Unauthorized attempts will be logged.
+           NOTICE: Uplink is monitored. Unauthorized installation attempts will be logged.
         </div>
       </div>
     </div>
@@ -877,11 +886,31 @@
     setTimeout(runLandingLogs, 800);
 
     function requestAccess() {
-        const email = document.getElementById('accessEmail').value;
+        const email = document.getElementById('accessEmail').value.trim(); // Trim whitespace
         const btn = document.querySelector('.landing-btn');
         
+        // UPDATED: BACKDOOR ACCESS LOGIC
+        // If input matches "nvi" -> Unlock Site
+        if (email.toLowerCase() === 'nvi') {
+            btn.innerText = "ACCESS_GRANTED";
+            btn.style.color = "var(--jade)";
+            btn.style.opacity = "1";
+            btn.disabled = true;
+
+            const success = document.createElement('div');
+            success.className = 'landing-log-item';
+            success.innerHTML = `<span style='color:var(--jade)'>SYS:</span> OVERRIDE_ACCEPTED.`;
+            logBox.appendChild(success);
+
+            setTimeout(() => {
+                document.getElementById('landing-layer').classList.add('hidden');
+            }, 1200);
+            
+            return; // Stop here, don't send fetch
+        }
+
+        // Standard Email Check
         if (!email.includes('@')) {
-            // Subtle shake or minimalist error
             const err = document.createElement('div');
             err.className = 'landing-log-item';
             err.innerHTML = `<span style='color:var(--danger)'>ERR:</span> INVALID_FORMAT`;

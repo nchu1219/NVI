@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>UnoExon | Genetic Installation Layer</title>
+  <title>System Initialization | CLASSIFIED</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700;800&family=Manrope:wght@200;400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700;800&family=Manrope:wght@200;300;400;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -50,7 +50,7 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
-    /* Nav */
+    /* Nav - Hidden behind teaser but kept for structure */
     nav {
       position: fixed; top: 0; left: 0; width: 100%; padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100;
       transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000), background-color 0.3s ease;
@@ -335,7 +335,7 @@
         color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,1); 
     }
     .feature-card:hover .item-title, .feature-card.expanded .item-title {
-         color: var(--jade); text-shadow: 0 2px 10px rgba(0,0,0,1);
+          color: var(--jade); text-shadow: 0 2px 10px rgba(0,0,0,1);
     }
     
     .item-title { font-size: 1.6rem; font-weight: 300; color: var(--sand); transition: 0.8s; margin-bottom: 0; }
@@ -474,44 +474,203 @@
       .scroll-indicator { bottom: 100px; }
       .uplink-module { max-width: 100%; margin: 0 10px; }
     }
+
+    /* ========================================= */
+    /* NEW: LANDING / TEASER LAYER STYLES        */
+    /* ========================================= */
+    #landing-layer {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(2, 8, 12, 0.92); /* Slightly more transparent to tease content */
+        backdrop-filter: blur(20px); /* Heavy blur to hide details but show light */
+        z-index: 9999; /* Highest priority */
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* Lock Ring Animation */
+    .landing-lock-ring {
+        width: 160px; height: 160px;
+        border: 1px dashed rgba(247, 169, 74, 0.15); /* Fainter gold */
+        border-radius: 50%;
+        position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        animation: lockSpin 45s linear infinite; /* Slower spin */
+        pointer-events: none;
+    }
+    .landing-lock-ring::before {
+        content: ''; position: absolute; inset: -20px;
+        border: 1px solid rgba(139, 198, 160, 0.05);
+        border-radius: 50%;
+        border-top-color: rgba(139, 198, 160, 0.3);
+        animation: lockSpinReverse 25s linear infinite;
+    }
+    @keyframes lockSpin { 0% {transform: translate(-50%, -50%) rotate(0deg);} 100% {transform: translate(-50%, -50%) rotate(360deg);} }
+    @keyframes lockSpinReverse { 0% {transform: rotate(360deg);} 100% {transform: rotate(0deg);} }
+
+    .landing-title {
+        font-family: var(--font-main);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 300;
+        letter-spacing: 0.2em;
+        color: var(--sand);
+        margin-bottom: 12px;
+        text-shadow: 0 0 20px rgba(0,0,0,0.8);
+    }
+    
+    .landing-subtitle {
+        font-family: var(--font-mono);
+        color: var(--jade);
+        font-size: 0.7rem; letter-spacing: 0.3em;
+        margin-bottom: 80px;
+        opacity: 0.6;
+    }
+
+    .landing-status-box {
+        /* Minimalist log box */
+        border-left: 1px solid rgba(139, 198, 160, 0.2);
+        padding: 10px 20px;
+        min-width: 280px;
+        max-width: 400px;
+        font-family: var(--font-mono);
+        text-align: left;
+        margin-bottom: 50px;
+        background: transparent;
+    }
+
+    .landing-log-item {
+        font-size: 0.65rem; color: var(--text-dim);
+        margin-bottom: 4px;
+        opacity: 0;
+        animation: fadeInLog 1s forwards;
+    }
+    .landing-log-item span { color: var(--goldfire); margin-right: 8px; opacity: 0.7; }
+    
+    @keyframes fadeInLog { from {opacity:0; transform: translateY(5px);} to {opacity:0.5; transform: translateY(0);} }
+
+    .landing-form {
+        display: flex; gap: 0;
+        width: 100%; max-width: 320px;
+        position: relative;
+        z-index: 10000;
+        border-bottom: 1px solid rgba(217, 198, 163, 0.2);
+    }
+    
+    .landing-input {
+        background: transparent;
+        border: none;
+        color: #fff;
+        padding: 12px 0;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        flex-grow: 1;
+        outline: none;
+        transition: 0.3s;
+        text-align: center;
+        letter-spacing: 0.1em;
+    }
+    .landing-input:focus { border-color: var(--jade); }
+    .landing-input::placeholder { color: rgba(255,255,255,0.15); letter-spacing: 0.1em; }
+    
+    .landing-btn {
+        background: transparent;
+        color: var(--jade);
+        border: none;
+        padding: 0 16px;
+        font-family: var(--font-mono);
+        font-weight: 400;
+        font-size: 0.7rem;
+        cursor: pointer;
+        transition: 0.3s;
+        letter-spacing: 0.1em;
+        opacity: 0.6;
+    }
+    .landing-btn:hover { opacity: 1; text-shadow: 0 0 10px var(--jade); }
+    
+    /* Blinking cursor at end of input */
+    .landing-form::after {
+        content: '';
+        width: 6px; height: 14px;
+        background: var(--jade);
+        position: absolute; right: 0; bottom: 12px;
+        animation: blink 1s infinite;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .landing-footer {
+        position: absolute; bottom: 30px;
+        font-family: var(--font-mono);
+        font-size: 0.6rem; color: var(--text-dim); opacity: 0.2;
+        letter-spacing: 0.1em;
+    }
   </style>
 </head>
 
 <body>
+  <!-- ============================================= -->
+  <!-- MYSTERIOUS TEASER LAYER                       -->
+  <!-- ============================================= -->
+  <div id="landing-layer">
+      <div class="landing-lock-ring"></div>
+      
+      <!-- No Logo. Just silence. -->
+      <h1 class="landing-title">SEQUENCE</h1>
+      <div class="landing-subtitle">RESTRICTED ENVIRONMENT</div>
+
+      <div class="landing-status-box" id="landingLogBox">
+          <!-- Minimal logs injected via JS -->
+      </div>
+
+      <div class="landing-form">
+          <input type="email" class="landing-input" placeholder="IDENTITY_KEY" id="accessEmail">
+          <button class="landing-btn" onclick="requestAccess()">ESTABLISH_LINK</button>
+      </div>
+      
+      <div class="landing-footer">
+          SECURE PROTOCOL // 424-9
+      </div>
+  </div>
+  <!-- ============================================= -->
+
+
   <div class="noise-overlay"></div>
   <div class="sky"></div>
   <div class="stars"></div>
   <div class="halo"></div>
   <div id="fireflies"></div>
 
+  <!-- Main Nav (Hidden visually by Landing Layer but exists in DOM) -->
   <nav id="mainNav">
-    <div class="brand">UNOEXON</div>
+    <div class="brand"></div> <!-- Removed Brand Text -->
     <div class="nav-links">
     </div>
   </nav>
 
+  <!-- Main Page Content (Hidden visually by Landing Layer) -->
   <div class="page">
     
     <section class="hero">
       <div style="margin-bottom: auto;"></div>
       
       <div class="content">
-        <div class="hero-tag reveal">GENETIC INSTALLATION LAYER</div>
+        <!-- Removed "GENETIC INSTALLATION LAYER" tag -->
+        <div class="hero-tag reveal" style="opacity: 0;"></div> 
         
         <h1 class="hero-title reveal">
-          Genetic Function, <br>
-          <strong class="hacker-text" data-value="INSTALLED"></strong>
+          <!-- Obscured Title -->
+          <br>
+          <strong class="hacker-text" data-value="///"></strong>
         </h1>
 
         <div class="hero-lines reveal">
-          <div>Natural expression</div>
-          <div>Silent unless correct</div>
-          <div>Built to last</div>
+          <!-- Hidden lines -->
         </div>
       </div>
       
+      <!-- Hidden Button Text -->
       <button class="architect-btn reveal" onclick="toggleTerminal()" style="transition-delay: 0.8s;">
-        ✨ INITIATE INSTALLATION
+        ✨
       </button>
       
       <div style="margin-bottom: auto;"></div>
@@ -622,19 +781,19 @@
     </footer>
     
     <div class="footer-legal">
-        DISCLAIMER: UnoExon is a conceptual demonstration powered by AI. Generated protocols are for simulation only. Not for medical use.
+        DISCLAIMER: Conceptual demonstration powered by AI.
     </div>
   </div>
 
   <div class="terminal-overlay" id="terminalOverlay">
     <div class="terminal-window">
       <div class="terminal-header">
-        <span class="terminal-title">UNOEXON // INSTALLATION_INTELLIGENT CORE_V4.0 [Online]</span>
+        <span class="terminal-title">INTELLIGENT CORE_V4.0 [Online]</span>
         <span class="terminal-close" onclick="toggleTerminal()">×</span>
       </div>
       <div class="terminal-body">
         <div class="terminal-prompt" id="terminalPrompt">
-          <p>Define desired biological function for installation protocol generation.</p>
+          <p>Define desired biological function for protocol generation.</p>
           <p style="font-size: 0.75rem; opacity: 0.6; margin-top: 4px;">Example: "Targeted tumor lysis" or "神經元再生矩陣"</p>
         </div>
         <!-- UPDATED INPUT GROUP STRUCTURE WITH > SYMBOL -->
@@ -659,7 +818,7 @@
   <div class="terminal-overlay" id="contactOverlay">
     <div class="terminal-window">
       <div class="terminal-header">
-        <span class="terminal-title" style="color: var(--goldfire);">INSTALLATION_UPLINK // SECURE</span>
+        <span class="terminal-title" style="color: var(--goldfire);">UPLINK // SECURE</span>
         <span class="terminal-close" onclick="toggleContactTerminal()">×</span>
       </div>
       <div class="terminal-body">
@@ -670,25 +829,110 @@
             <input type="email" class="ai-input" id="uplinkEmail" placeholder="auth@identity.com" autocomplete="off" style="font-size: 0.9rem;">
           </div>
           <div>
-            <label class="contact-label">INSTALLATION_PARAMETERS (MESSAGE)</label>
+            <label class="contact-label">PARAMETERS (MESSAGE)</label>
             <input type="text" class="ai-input" id="uplinkMsg" placeholder="Input target specifications..." autocomplete="off" style="font-size: 0.9rem;">
           </div>
         </div>
 
         <div style="position: relative; height: 40px;">
            <button class="generate-btn" id="handshakeBtn" onclick="submitContactHandshake()">
-             TRANSMIT INSTALLATION REQUEST
+             TRANSMIT REQUEST
            </button>
         </div>
 
         <div class="terminal-disclaimer" style="border-color: rgba(247, 169, 74, 0.2); color: rgba(247, 169, 74, 0.5);">
-           NOTICE: Uplink is monitored. Unauthorized installation attempts will be logged.
+           NOTICE: Uplink is monitored. Unauthorized attempts will be logged.
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    // ===========================================
+    // MYSTERIOUS LANDING PAGE LOGIC
+    // ===========================================
+    const landingLogs = [
+        "SIGNAL_DETECTED",
+        "ORIGIN: UNKNOWN",
+        "ENCRYPTION: ACTIVE",
+        "AWAITING_KEY...",
+        "<span style='color:var(--goldfire)'>STATUS: STANDBY</span>"
+    ];
+
+    const logBox = document.getElementById('landingLogBox');
+    let logIndex = 0;
+
+    function runLandingLogs() {
+        if (logIndex < landingLogs.length) {
+            const div = document.createElement('div');
+            div.className = 'landing-log-item';
+            div.innerHTML = `<span>>></span> ${landingLogs[logIndex]}`;
+            logBox.appendChild(div);
+            logIndex++;
+            setTimeout(runLandingLogs, 1200); // Slower, colder pace
+        }
+    }
+    
+    // Start logs
+    setTimeout(runLandingLogs, 800);
+
+    function requestAccess() {
+        const email = document.getElementById('accessEmail').value;
+        const btn = document.querySelector('.landing-btn');
+        
+        if (!email.includes('@')) {
+            // Subtle shake or minimalist error
+            const err = document.createElement('div');
+            err.className = 'landing-log-item';
+            err.innerHTML = `<span style='color:var(--danger)'>ERR:</span> INVALID_FORMAT`;
+            logBox.appendChild(err);
+            return;
+        }
+
+        btn.innerText = "VERIFYING...";
+        btn.disabled = true;
+
+        // UPDATED: Actual Fetch to Worker
+        const WORKER_URL = "https://my-telegram-bot.ming-cgt.workers.dev";
+        
+        fetch(WORKER_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                email: email,
+                message: "User requested early access (MYSTERY LAYER).",
+                source: "Sequence Teaser"
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => {
+            if (response.ok) {
+                btn.innerText = "LINK_ESTABLISHED";
+                btn.style.color = "var(--jade)";
+                btn.style.opacity = "1";
+                
+                const success = document.createElement('div');
+                success.className = 'landing-log-item';
+                success.innerHTML = `<span style='color:var(--jade)'>ACK:</span> ID LOGGED.`;
+                logBox.appendChild(success);
+            } else {
+                throw new Error("Worker Error");
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            const err = document.createElement('div');
+            err.className = 'landing-log-item';
+            err.innerHTML = `<span style='color:var(--danger)'>ERR:</span> UPLINK_DROPPED`;
+            logBox.appendChild(err);
+            
+            btn.innerText = "RETRY_LINK";
+            btn.disabled = false;
+        });
+    }
+    // ===========================================
+
+
+
     // 1. Reveal Animations & Firefly
     const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
     const observer = new IntersectionObserver((entries) => {

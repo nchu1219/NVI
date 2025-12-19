@@ -73,9 +73,9 @@
     .section { padding: 120px 0; }
     
     /* Hero */
-    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; } 
     .hero-tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--goldfire); margin-bottom: 24px; display: inline-block; border: 1px solid rgba(247, 169, 74, 0.3); padding: 6px 14px; border-radius: 100px; backdrop-filter: blur(4px); }
-    .hero-title { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 200; line-height: 1.1; margin-bottom: 48px; color: var(--sand); }
+    .hero-title { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 200; line-height: 1.1; margin-bottom: 48px; color: var(--sand); position: relative; z-index: 10; } /* Text on top */
     
     .hero-title strong { 
         font-weight: 800; 
@@ -133,9 +133,9 @@
     }
     /* ----------------------------------------------- */
 
-    .hero-lines { display: flex; flex-direction: column; gap: 20px; border-left: 2px solid var(--goldfire); padding-left: 32px; max-width: 800px; font-size: 1.8rem; color: var(--sand); }
+    .hero-lines { display: flex; flex-direction: column; gap: 20px; border-left: 2px solid var(--goldfire); padding-left: 32px; max-width: 800px; font-size: 1.8rem; color: var(--sand); position: relative; z-index: 10; }
     
-    .architect-btn { margin-top: 48px; align-self: flex-start; background: rgba(247, 169, 74, 0.05); border: 1px solid var(--goldfire); color: var(--goldfire); font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 32px; cursor: pointer; border-radius: 4px; transition: all 0.6s ease; display: flex; align-items: center; gap: 12px; animation: bioPulseDeep 8s ease-in-out infinite; }
+    .architect-btn { margin-top: 48px; align-self: flex-start; background: rgba(247, 169, 74, 0.05); border: 1px solid var(--goldfire); color: var(--goldfire); font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 32px; cursor: pointer; border-radius: 4px; transition: all 0.6s ease; display: flex; align-items: center; gap: 12px; animation: bioPulseDeep 8s ease-in-out infinite; z-index: 10; }
     @media (hover: hover) { .architect-btn:hover { background: rgba(247, 169, 74, 0.15); color: var(--goldfire); border-color: var(--goldfire); box-shadow: 0 0 25px rgba(247, 169, 74, 0.4); transform: translateY(-2px); animation: none; } }
     @media (min-width: 1024px) { .architect-btn { position: absolute; right: 0; top: 55%; transform: translateY(-50%); margin-top: 0; background: rgba(2, 8, 12, 0.5); backdrop-filter: blur(4px); padding: 24px 32px; border: 1px solid rgba(247, 169, 74, 0.5); } }
     
@@ -488,6 +488,7 @@
         padding: 20px;
         /* UPDATED: Add transition support for hidden class */
         transition: opacity 1.2s ease, visibility 1.2s ease;
+        overflow: hidden; /* Ensure effects don't spill */
     }
     
     /* NEW: Hidden Class for Backdoor Access */
@@ -496,6 +497,87 @@
         visibility: hidden !important;
         pointer-events: none !important;
     }
+
+    /* === [NEW "SWIMMING" BACKGROUND EFFECTS] === */
+    /* Container strictly inside landing layer */
+    .landing-bg-swimmer {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.4;
+        z-index: -2;
+        pointer-events: none;
+        animation: floatAround infinite alternate;
+    }
+
+    /* Jade Blob */
+    #swim1 {
+        width: 40vw; height: 40vw;
+        background: radial-gradient(circle, var(--jade), transparent 70%);
+        top: 20%; left: 20%;
+        animation-duration: 25s;
+    }
+    /* Gold Blob */
+    #swim2 {
+        width: 35vw; height: 35vw;
+        background: radial-gradient(circle, var(--goldfire), transparent 70%);
+        bottom: 10%; right: 10%;
+        animation-duration: 30s;
+        animation-delay: -5s;
+    }
+    /* Deep Teal Blob */
+    #swim3 {
+        width: 50vw; height: 50vw;
+        background: radial-gradient(circle, var(--midnight-teal), transparent 80%);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        animation-duration: 40s;
+        opacity: 0.6;
+    }
+
+    @keyframes floatAround {
+        0% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* === [NEW "VECTOR" INSERTION TRAILS] === */
+    /* These represent the gene vectors searching/inserting */
+    .gene-vector-path {
+        position: absolute;
+        width: 200px; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--jade), #fff);
+        opacity: 0;
+        z-index: -1;
+        filter: drop-shadow(0 0 5px var(--jade));
+        border-radius: 100%;
+        animation: injectPath 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    /* Top-left to Center */
+    .gene-vector-path:nth-child(1) {
+        top: 30%; left: -100px;
+        transform: rotate(25deg);
+        animation-delay: 0s;
+    }
+    /* Bottom-right to Center */
+    .gene-vector-path:nth-child(2) {
+        bottom: 30%; right: -100px;
+        transform: rotate(-155deg);
+        background: linear-gradient(90deg, transparent, var(--goldfire), #fff);
+        filter: drop-shadow(0 0 5px var(--goldfire));
+        animation-delay: 4s;
+    }
+
+    @keyframes injectPath {
+        0% { transform: translateX(0) scaleX(0.5); opacity: 0; }
+        20% { opacity: 0.8; }
+        50% { transform: translateX(50vw) scaleX(1.5); opacity: 1; } /* Passing through center */
+        80% { opacity: 0; }
+        100% { transform: translateX(100vw) scaleX(0.5); opacity: 0; }
+    }
+    /* =========================================== */
 
     /* Lock Ring Animation */
     .landing-lock-ring {
@@ -621,6 +703,15 @@
   <!-- MYSTERIOUS TEASER LAYER                       -->
   <!-- ============================================= -->
   <div id="landing-layer">
+      <!-- SWIMMING BACKGROUND BLOBS (Cytoplasm) -->
+      <div id="swim1" class="landing-bg-swimmer"></div>
+      <div id="swim2" class="landing-bg-swimmer"></div>
+      <div id="swim3" class="landing-bg-swimmer"></div>
+
+      <!-- ACTIVE VECTORS (Swimming Trails) -->
+      <div class="gene-vector-path"></div>
+      <div class="gene-vector-path"></div>
+
       <div class="landing-lock-ring"></div>
       
       <!-- No Logo. Just silence. -->
